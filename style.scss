@@ -1,0 +1,76 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  padding: 16px;
+  /* width: 1200px; */
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+.header {
+  display: flex;
+  margin: 0 0 12px;
+}
+
+.title {
+  text-align: left;
+  margin: 0 12px 0 0;
+}
+
+.topLeaguesButton {
+  height: 28px;
+  background: #FFF;
+  border: 1px solid grey;
+  cursor: pointer;
+}
+
+.regionsButton {
+  height: 28px;
+  background: #FFF;
+  border: none;
+  cursor: pointer;
+  opacity: 0.3;
+}
+
+.topLeaguesButton.active {
+  background: #FEDF8C;
+}
+
+.regionsButton.active {
+  opacity: 1;
+}
+
+.europe {
+  background: #1FB35F;
+}
+.southAmerica {
+  background: #FEB74F;
+}
+.northAmerica {
+  background: #55AFE1;
+}
+.asia {
+  background: #F051AE;
+}
+.africa {
+  background: #FD3A34;
+}
+.none {
+  background: #C1C1C1;
+}
+
+.subHeader {
+  width: 100%;
+  display: flex;
+}
+.typeWrapper {
+  display: flex;
+  align-items: center;
+}
+.subTitle {
+  text-align: left;
+  margin: 0 12px 0 0;
+}

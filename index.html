@@ -6,7 +6,25 @@
     <title>Transfer</title>
   </head>
   <body>
-    <h2 class="title">Football Transfers</h2>
+    <header class="header">
+      <h2 class="title">Football Transfers</h2>
+      <button data-type="In" class="topLeaguesButton active" id="toTopLeagues">To Top Leagues</button>
+      <button data-type="Out" class="topLeaguesButton" id="fromTopLeagues">From Top Leagues</button>
+      <button data-type="Inside" class="topLeaguesButton" id="insideTopLeagues">Between Top Leagues</button>
+    </header>
+    <div class="subHeader">
+      <div id="regionsFilters" class="typeWrapper">
+        <h3 id="regionsSubTitle" class="subTitle">From region</h2>
+          <button data-type="Europe, ex. Top Leagues" class="regionsButton europe active" id="europe">Europe</button>
+          <button data-type="South America" class="regionsButton southAmerica active" id="southAmerica">South America</button>
+          <button data-type="North America" class="regionsButton northAmerica active" id="northAmerica">North America</button>
+          <button data-type="Asia" class="regionsButton asia active" id="asia">Asia</button>
+          <button data-type="Africa" class="regionsButton africa active" id="africa">Africa</button>
+          <button data-type="No club" class="regionsButton none active" id="none">None</button>
+      </div>
+      
+    </div>
+    
     <script type="module" src="./main.js"></script>
   </body>
 </html>

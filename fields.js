@@ -21,6 +21,26 @@
 //   "Transfer ID"
 // ]
 
+export const regionsOrder = [
+  'Top', 
+  'Europe, ex. Top Leagues', 
+  'Asia', 
+  'South America', 
+  'North America', 
+  'Africa', 
+  'No club',
+  'Retired'
+];
+
+export const regions = {
+  europe: 'Europe, ex. Top Leagues',
+  southAmerica: 'South America',
+  northAmerica: 'North America',
+  asia: 'Asia',
+  africa: 'Africa',
+  none: 'No club',
+}
+
 export const playerField = "Player";
 export const transferIdField = "Transfer ID";
 export const typeField = "";
