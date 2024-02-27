@@ -63,6 +63,7 @@ body {
 }
 
 .subHeader {
+  height: 28px;
   width: 100%;
   display: flex;
 }
@@ -73,4 +74,69 @@ body {
 .subTitle {
   text-align: left;
   margin: 0 12px 0 0;
+}
+
+
+.transfers {
+  height: 780px;
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+}
+
+.transfersPoints {
+  position: relative;
+  border: 2px dashed #c1c2c1;
+}
+.transfersData {
+  position: relative;
+  border: 2px dashed #c1c2c1;
+}
+
+svg g text {
+  font-size: 9px
+}
+
+.axisYTop {
+  position: absolute;
+  top: 0px;
+  left: -14px;
+  transform-origin: top left;
+  transform: rotateZ(-90deg) translateX(-50%);
+
+  font-size: 12px;
+}
+
+.axisYTopBorder {
+  position: absolute;
+  top: 0px;
+  left: -1px;
+  transform-origin: top left;
+  transform: rotateZ(-90deg) translateX(-50%);
+  height: 6px;
+  width: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.axisX {
+  position: absolute;
+  transform: translateY(50%);
+  top: 700px;
+  left: 200px;
+
+  font-size: 12px;
+}
+
+.transferInfo {
+  display: none;
+  position: absolute;
+  padding: 8px;
+  border: 1px solid #c1c1c1;
+  z-index: 100;
+  background: #FFFFFF;
+}
+
+.playerImage {
+  height: 180px;
 }
