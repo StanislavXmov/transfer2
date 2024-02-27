@@ -19,7 +19,7 @@ const clientWidth = container.clientWidth;
 
 const axisYTop = document.getElementById('axisYTop');
 const axisYTopBorder = document.getElementById('axisYTopBorder');
-const axisX = document.getElementById('axisX');
+// const axisX = document.getElementById('axisX');
 
 const transferInfo = document.getElementById('transferInfo');
 const playerImage = document.getElementById('playerImage');
@@ -59,13 +59,13 @@ axisYTop.style.top = `${axisStepY * 2.5}px`;
 axisYTopBorder.style.top = `${axisStepY * 2.5}px`;
 axisYTopBorder.style.width = `${axisStepY * 4.5}px`;
 // axisX.style.top = `${axisStepY * 5 + 6}px`;
-axisX.style.top = `${height - axisStepY / 4 - dy + 3}px`;
-axisX.style.left = `${axisStep * 5 + axisStep / 2 + 32}px`;
-axisX.style.left = `${axisStep * 5 + axisStep / 2 + 32}px`;
-if (axisStep < 100) {
-  axisX.style.left = `auto`;
-  axisX.style.right = `0px`;
-}
+// axisX.style.top = `${height - axisStepY / 4 - dy + 3}px`;
+// axisX.style.left = `${axisStep * 5 + axisStep / 2 + 32}px`;
+// axisX.style.left = `${axisStep * 5 + axisStep / 2 + 32}px`;
+// if (axisStep < 100) {
+//   axisX.style.left = `auto`;
+//   axisX.style.right = `0px`;
+// }
 
 const axis = {
   x: {},
@@ -111,34 +111,78 @@ axisDataY.forEach((step, i) => {
     .range([height - (i * axisStepY),height - (i + 1) * axisStepY]);
 });
 
+// all 780px
+const allheight = 780;
+const svgHeight = axisStepY * 5 + 10;
 const svg = d3.select('#transfersPoints').append("svg")
   .attr("width", width)
-  .attr("height", axisStepY * 5 + 10)
+  .attr("height", svgHeight)
   .attr("viewBox", [0, 0, width, axisStepY * 5]);
 
-Object.keys(axis.x).forEach(key => {
-  if (Number(key) === axisData[axisData.length - 2]) {
-    return;
-  }
-  svg.append("g")
-    .attr("transform", `translate(${paddingLeft},${height - axisStepY / 4 - dy })`)
-    .attr("class", `domainX`)
-    .call(d3.axisBottom(axis.x[key]).ticks(1).tickFormat((d => `${axisDataString[d]}`)))
-    .call(g => g.select(".domain").remove());
-});
+console.log("width", width, "height", svgHeight);
 
-svg.selectAll('.domainX')
-  .selectAll("line").remove();
+// Object.keys(axis.x).forEach(key => {
+//   if (Number(key) === axisData[axisData.length - 2]) {
+//     return;
+//   }
+//   svg.append("g")
+//     .attr("transform", `translate(${paddingLeft},${height - axisStepY / 4 - dy })`)
+//     .attr("class", `domainX`)
+//     .call(d3.axisBottom(axis.x[key]).ticks(1).tickFormat((d => `${axisDataString[d]}`)))
+//     .call(g => g.select(".domain").remove());
+// });
 
-svg.selectAll('.domainX')
-  .selectAll("text")
-  .attr("text-anchor", 'start');
+// const lineGroup = svg.append('g')
+//   .attr("id", 'line');
 
-svg.selectAll('.tick')
-  .attr('transform', (d, i, e) => {
-    const x = Number(e[i].getAttribute('transform').split('(')[1].split(',')[0]);
-    return `translate(${x + 2}, 0)`;
-  });
+// const dy1Axis = height - axisStepY / 4 - dy + 6;
+// const dy2Axis = height - axisStepY / 4 - dy + 18;
+// for (let i = 0; i < 6; i++) {
+//   if (i === 0) {
+//     lineGroup.append('path')
+//       .attr("d", `
+//       M${0 + paddingLeft} ${dy1Axis}V${dy2Axis}
+//       `)
+//       .attr('stroke', '#E0E0E0');
+//   } else if (i === 1) {
+//     lineGroup.append('path')
+//       .attr("d", `
+//       M${stepXD + paddingLeft} ${dy1Axis}V${dy2Axis}
+//       `)
+//       .attr('stroke', '#E0E0E0');
+//   } else if (i === 2) {
+//     lineGroup.append('path')
+//       .attr("d", `
+//       M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}
+//       `)
+//       .attr('stroke', '#E0E0E0');
+//   } else if (i === 3) {
+//     lineGroup.append('path')
+//       .attr("d", `
+//       M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}
+//       `)
+//       .attr('stroke', '#E0E0E0');
+//   } else if (i === 4) {
+//     lineGroup.append('path')
+//       .attr("d", `
+//       M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}
+//       `)
+//       .attr('stroke', '#E0E0E0');
+//   } 
+// }
+
+// svg.selectAll('.domainX')
+//   .selectAll("line").remove();
+
+// svg.selectAll('.domainX')
+//   .selectAll("text")
+//   .attr("text-anchor", 'start');
+
+// svg.selectAll('.tick')
+//   .attr('transform', (d, i, e) => {
+//     const x = Number(e[i].getAttribute('transform').split('(')[1].split(',')[0]);
+//     return `translate(${x + 2}, 0)`;
+//   });
 
 Object.keys(axis.y).forEach(key => {
   if (Number(key) === axisData[axisData.length - 2]) {
@@ -165,6 +209,9 @@ const getX = (d) => {
 }
 
 const getMarketValue = (v) => Number(v.split(',').join(''));
+
+let yState = {};
+let yStatePL = {};
 
 const setState = (d, state) => {
   if (d[feeField] === '0' || d[feeField] === '?') {
@@ -215,7 +262,8 @@ const circleOver = (e) => {
       transferInfo.style.display = 'block';
       transferInfo.style.width = `320px`;
       transferInfo.style.left = `${Number(e.target.dataset.left) + 10}px`;
-      transferInfo.style.top = `${Number(e.target.dataset.top)}px`
+      transferInfo.style.top = `${Number(e.target.dataset.top)}px`;
+      transferInfo.style.bottom = `auto`;
       
       name.textContent = d[playerField];
       // playerImage.src = players[d[playerField]].img;
@@ -239,17 +287,13 @@ const feeCircleOver = (e) => {
     const d = dataFeeState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
       transferInfo.style.display = 'block';
-      if (document.body.clientWidth <= 1200) {
-        transferInfo.style.left = `${Number(e.target.dataset.left) + 10}px`;
-        transferInfo.style.top = `${Number(e.target.dataset.top) + axisStepY * 5 - 6}px`
-      } else {
-        transferInfo.style.width = `320px`;
-        transferInfo.style.left = `${Number(e.target.dataset.left) - 330}px`;
-        transferInfo.style.top = `${Number(e.target.dataset.top) + axisStepY * 5 - 6}px`;
-      }
-      
+      transferInfo.style.width = `320px`;
+      transferInfo.style.left = `${Number(e.target.dataset.left) + 10}px`;
+      transferInfo.style.bottom = `${780 - Number(e.target.dataset.top) - axisStepY * 5 - 6}px`
+      transferInfo.style.top = `auto`;
+
       name.textContent = d[playerField];
-      playerImage.src = players[d[playerField]].img;
+      // playerImage.src = players[d[playerField]].img;
       age.textContent = d['Age'];
       fromTeam.textContent = d[fromTeamField];
       fromLeague.textContent = d[fromLeagueField];
@@ -325,6 +369,231 @@ const createPoints = (data) => {
           .attr('stroke', '#FFFFFF');
 }
 
+const addFeeAxisTitles = () => {
+  const wrapper = d3.select('.feePointsWrapper');
+  wrapper.append('div')
+    .attr("class", 'axisYFee')
+    .attr("id", 'axisYFee')
+    .text('Free transfers');
+  wrapper.append('div')
+    .attr("class", 'axisYFeeBorder')
+    .attr("id", 'axisYFeeBorder');
+}
+
+const createFeePoints = (data) => {
+  console.log('createFeePoints', data);
+  const feeDataState = {};
+
+  data.forEach(t => {
+    if (feeDataState[getMarketValue(t[marketValueField])]) {
+      feeDataState[getMarketValue(t[marketValueField])].counter += 1;
+    } else {
+      feeDataState[getMarketValue(t[marketValueField])] = {};
+      feeDataState[getMarketValue(t[marketValueField])].counter = 1;
+    }
+  });
+
+  const maxFee = Math.max(...Object.values(feeDataState).map(v => v.counter));
+  for (const fee in feeDataState) {
+    if (maxFee > 30) {
+      feeDataState[fee].n = 3;
+    } else {
+      feeDataState[fee].n = 6;
+    }
+  }
+
+  const maxFeeH = maxFee * 3;
+  const height = 270;
+
+  let svg = null;
+  if (!document.getElementById('feePoints')) {
+    const wrapper = d3.select('#transfersPoints').append("div");
+    wrapper.attr("class", 'feePointsWrapper');
+    const axisX = wrapper.append("div");
+    axisX
+      .attr("class", 'axisX')
+      .text("Player Market Value")
+
+    addFeeAxisTitles();
+
+    svg = wrapper.append("svg")
+      .attr("class", 'feePoints')
+      .attr("id", 'feePoints')
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [0, 0, width, height]);
+
+    Object.keys(axis.x).forEach(key => {
+      if (Number(key) === axisData[axisData.length - 2]) {
+        return;
+      }
+      svg.append("g")
+        .attr("transform", `translate(${paddingLeft},${height - 18})`)
+        .attr("class", `domainX`)
+        .call(d3.axisBottom(axis.x[key]).ticks(1).tickFormat((d => `${axisDataString[d]}`)))
+        .call(g => g.select(".domain").remove());
+    });
+
+    svg.selectAll('.domainX')
+      .selectAll("line").remove();
+
+    svg.selectAll('.domainX')
+      .selectAll("text")
+      .attr("text-anchor", 'start');
+
+    svg.selectAll('.tick')
+      .attr('transform', (d, i, e) => {
+        const x = Number(e[i].getAttribute('transform').split('(')[1].split(',')[0]);
+        return `translate(${x + 2}, 0)`;
+      });
+
+    const lineGroup = svg.append('g')
+      .attr("id", 'lineX');
+    
+    const dy1Axis = height - 18 + 6;
+    const dy2Axis = height - 18 + 18;
+    for (let i = 0; i < 6; i++) {
+      if (i === 0) {
+        lineGroup.append('path')
+          .attr("d", `
+          M${0 + paddingLeft} ${dy1Axis}V${dy2Axis}
+          `)
+          .attr('stroke', '#E0E0E0');
+      } else if (i === 1) {
+        lineGroup.append('path')
+          .attr("d", `
+          M${stepXD + paddingLeft} ${dy1Axis}V${dy2Axis}
+          `)
+          .attr('stroke', '#E0E0E0');
+      } else if (i === 2) {
+        lineGroup.append('path')
+          .attr("d", `
+          M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}
+          `)
+          .attr('stroke', '#E0E0E0');
+      } else if (i === 3) {
+        lineGroup.append('path')
+          .attr("d", `
+          M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}
+          `)
+          .attr('stroke', '#E0E0E0');
+      } else if (i === 4) {
+        lineGroup.append('path')
+          .attr("d", `
+          M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}
+          `)
+          .attr('stroke', '#E0E0E0');
+      } 
+    }
+
+  } else {
+    svg = d3.select('#feePoints')
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [0, 0, width, height]);
+  }
+
+  const feeLineGroup = svg.append('g')
+    .attr("id", 'feeLine');
+  feeLineGroup.append('path')
+    .attr("d", `M${axis.x['0'](0) + paddingLeft - 10} ${height - 22 + 2}H${axis.x['100000000'](400000000)}`)
+    .attr('stroke', '#E0E0E0');
+  const dy1Axis = height - 22 + 6;
+  const dy2Axis = height - 22 - 2;
+  for (let i = 0; i < 6; i++) {
+    if (i === 0) {
+      feeLineGroup.append('path')
+        .attr("d", `M${0 + paddingLeft} ${dy1Axis}V${dy2Axis}`)
+        .attr('stroke', '#E0E0E0');
+    } else if (i === 1) {
+      feeLineGroup.append('path')
+        .attr("d", `M${stepXD + paddingLeft} ${dy1Axis}V${dy2Axis}`)
+        .attr('stroke', '#E0E0E0');
+    } else if (i === 2) {
+      feeLineGroup.append('path')
+        .attr("d", `M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}`)
+        .attr('stroke', '#E0E0E0');
+    } else if (i === 3) {
+      feeLineGroup.append('path')
+        .attr("d", `M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}`)
+        .attr('stroke', '#E0E0E0');
+    } else if (i === 4) {
+      feeLineGroup.append('path')
+        .attr("d", `M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}`)
+        .attr('stroke', '#E0E0E0');
+    } else if (i === 5) {
+      feeLineGroup.append('path')
+        .attr("d", `M${stepXD + (stepXD * 4) * (i - 1) + paddingLeft} ${dy1Axis}V${dy2Axis}`)
+        .attr('stroke', '#E0E0E0');
+    }
+  }
+
+  yState = {};
+  yStatePL = {};
+
+  svg.append("g")
+    .attr("id", "group2")
+    .selectAll()
+    .data(data)
+    .join("g")
+      .on('mouseover', feeCircleOver)
+      .on('mouseout', circleOut)
+      .style("cursor", "pointer")
+      .attr("transform", d => {
+        const x = getX(d)(getMarketValue(d[marketValueField])) + paddingLeft - 3;
+        let y = 0;
+        setState(d, yState);
+        const n = yState[getMarketValue(d[marketValueField])];
+        const dy = feeDataState[getMarketValue(d[marketValueField])].n;
+        const axisDy = (dy === 3 ? 6 : 3);
+        y = height - 24 + Number(d[feeField] === '?' ? 0 : d[feeField]) - n * dy - axisDy;
+        return `
+          translate(
+            ${x},
+            ${y})
+        `;
+        })
+      .append("circle")
+        .attr("cx", 3.5)
+        .attr("cy", 3.5)
+        .attr("r", 3.5)
+        .attr("fill", d => {
+          if (d[typeField] === insideType || d[typeField] === inType) {
+            return getFromColor(d);
+          } else {
+            return getToColor(d);
+          }
+        })
+        .attr("stroke", d => {
+          if (d[fromRegionField] === region && d[toRegionField] === region) {
+            return "#00000060";
+          } else {
+            getToColor(d)
+          }
+        })
+      .attr("data-index", (d, i) => d[transferIdField])
+      .attr("data-left", d => getX(d)(getMarketValue(d[marketValueField])) + paddingLeft - 3)
+      .attr("data-top", d => {
+        setState(d, yStatePL);
+        const n = yStatePL[getMarketValue(d[marketValueField])];
+        const dy = feeDataState[getMarketValue(d[marketValueField])].n;
+        const axisDy = (dy === 3 ? 6 : 3);
+        return height - 24 + Number(d[feeField] === '?' ? 0 : d[feeField]) - n * dy - axisDy;
+      })
+      .select(function() { return this.parentNode; })
+        .append("path")
+        .attr("data-index", (d, i) => d[transferIdField])
+        .attr("d", d => {
+          if (d[typeField] === insideType || d[typeField] === inType) {
+            return inD
+          } else {
+            return outD;
+          }
+        })
+        .style("pointer-events", 'none')
+        .attr('stroke', '#FFFFFF');
+}
+
 const clearGraph = () => {
   const group1 = document.querySelector('#group1');
   const group2 = document.querySelector('#group2');
@@ -346,4 +615,5 @@ export const setPointData = (data) => {
   dataState = filtered;
   dataState = dataState.map((d, i) => ({...d, i}));
   createPoints(filtered);
+  createFeePoints(dataFeeState);
 }
