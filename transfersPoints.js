@@ -119,7 +119,7 @@ const svg = d3.select('#transfersPoints').append("svg")
   .attr("height", svgHeight)
   .attr("viewBox", [0, 0, width, axisStepY * 5]);
 
-console.log("width", width, "height", svgHeight);
+// console.log("width", width, "height", svgHeight);
 
 // Object.keys(axis.x).forEach(key => {
 //   if (Number(key) === axisData[axisData.length - 2]) {
@@ -257,7 +257,6 @@ const circleOver = (e) => {
   if (e.target.dataset.index && selected !== e.target.dataset.index) {
     selected = e.target.dataset.index;
     const d = dataState.find(t => t[transferIdField] === e.target.dataset.index);
-    // const d = dataState[Number(e.target.dataset.index)];
     if (d) {
       transferInfo.style.display = 'block';
       transferInfo.style.width = `320px`;
@@ -266,7 +265,7 @@ const circleOver = (e) => {
       transferInfo.style.bottom = `auto`;
       
       name.textContent = d[playerField];
-      // playerImage.src = players[d[playerField]].img;
+      playerImage.src = players[d[playerField]].img;
       age.textContent = d['Age'];
       fromTeam.textContent = d[fromTeamField];
       fromLeague.textContent = d[fromLeagueField];
@@ -283,7 +282,6 @@ const circleOver = (e) => {
 const feeCircleOver = (e) => {
   if (e.target.dataset.index && selected !== e.target.dataset.index) {
     selected = e.target.dataset.index;
-    // const d = dataFeeState[Number(e.target.dataset.index)];
     const d = dataFeeState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
       transferInfo.style.display = 'block';
@@ -293,7 +291,7 @@ const feeCircleOver = (e) => {
       transferInfo.style.top = `auto`;
 
       name.textContent = d[playerField];
-      // playerImage.src = players[d[playerField]].img;
+      playerImage.src = players[d[playerField]].img;
       age.textContent = d['Age'];
       fromTeam.textContent = d[fromTeamField];
       fromLeague.textContent = d[fromLeagueField];
@@ -381,7 +379,7 @@ const addFeeAxisTitles = () => {
 }
 
 const createFeePoints = (data) => {
-  console.log('createFeePoints', data);
+  // console.log('createFeePoints', data);
   const feeDataState = {};
 
   data.forEach(t => {
@@ -610,7 +608,7 @@ export const setPointData = (data) => {
 
   dataFeeState = data.filter(t => t[feeField] === '0' || t[feeField] === '?');
   filtered = data.filter(t => t[feeField] !== '0' && t[feeField] !== '?');
-  console.log({dataFeeState, filtered});
+  // console.log({dataFeeState, filtered});
 
   dataState = filtered;
   dataState = dataState.map((d, i) => ({...d, i}));

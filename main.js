@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import './style.scss';
 import { fromRegionField, inType, typeField, regions, outType, insideType, toRegionField } from './fields';
 import { colors, setPointData } from './transfersPoints';
+import { setLeagues } from './transfersLeagues';
 
 let topFilter = inType;
 
@@ -154,6 +155,7 @@ const getFilteredData = () => {
   console.log(filteredData);
 
   setPointData(filteredData);
+  setLeagues(filteredData);
 
   return filteredData;
 }

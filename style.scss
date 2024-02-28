@@ -172,3 +172,13 @@ svg g text {
   position: relative;
   // border: 2px solid #c1c0c0;
 }
+
+.leaguesWrapper {
+  height: 100%;
+  display: grid;
+  // grid-template-columns: 1fr 1fr;
+}
+
+#fromLegues {
+  border: 2px solid #c1c0c0;
+}
