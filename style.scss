@@ -89,7 +89,7 @@ body {
 }
 .transfersData {
   position: relative;
-  border: 2px dashed #c1c2c1;
+  // border: 2px dashed #c1c2c1;
 }
 
 svg g text {
@@ -176,9 +176,19 @@ svg g text {
 .leaguesWrapper {
   height: 100%;
   display: grid;
-  // grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
-#fromLegues {
-  border: 2px solid #c1c0c0;
+// #fromLeagues, #toLeagues {
+//   border: 2px solid #c1c0c0;
+// }
+
+.leaguesHeaders {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.leaguesSubTitle {
+  font-size: 14px;
+  margin: 0;
 }

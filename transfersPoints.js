@@ -4,7 +4,8 @@ import { players } from './players';
 
 
 export const colors = {
-  'Top': '#FEFEFE',
+  // 'Top': '#FEFEFE',
+  'Top': '#c0ffff',
   'Europe, ex. Top Leagues': '#1FB35F',
   'Asia': '#F051AE',
   'South America': '#FEB74F',
@@ -12,6 +13,7 @@ export const colors = {
   'Africa': '#FD3A34',
   'No club': '#C1C1C1',
   'Retired': '#C1C1C1',
+  'No Club': '#C1C1C1',
 };
 
 const container = document.getElementById('transfersPoints');
