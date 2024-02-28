@@ -70,10 +70,24 @@ const changeTopType = (target) => {
   getFilteredData();
 }
 
-const changeRegionFilter = (target) => {
-  console.log(target.dataset.type);
-  const type = target.dataset.type;
-  target.classList.toggle('active');
+const checkAllFilter = () => {
+  if (europe && southAmerica && northAmerica && asia && africa && none) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+const resetAllRegionsFilter = () => {
+  europe = false;
+  southAmerica = false;
+  northAmerica = false;
+  asia = false;
+  africa = false;
+  none = false;
+}
+
+const changeFilter = (type) => {
   switch (type) {
     case regions.europe:
       europe = !europe;
@@ -95,6 +109,20 @@ const changeRegionFilter = (target) => {
       break;
     default:
       break;
+  }
+}
+
+const changeRegionFilter = (target) => {
+  console.log(target.dataset.type);
+  const type = target.dataset.type;
+  if (checkAllFilter()) {
+    regionButtons.forEach(b => b.classList.remove('active'));
+    resetAllRegionsFilter();
+    target.classList.add('active');
+    changeFilter(type);
+  } else {
+    target.classList.toggle('active');
+    changeFilter(type);
   }
 
   getFilteredData();
