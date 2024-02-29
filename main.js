@@ -6,12 +6,12 @@ import { setLeagues } from './transfersLeagues';
 
 let topFilter = inType;
 
-let europe = true;
-let southAmerica = true;
-let northAmerica = true;
-let asia = true;
-let africa = true;
-let none = true;
+let europe = true; // 5
+let southAmerica = true; // 4
+let northAmerica = true; // 3
+let asia = true; // 2
+let africa = true; // 1
+let none = true; // 0
 
 const toTopLeaguesButton = document.getElementById('toTopLeagues');
 const fromTopLeaguesButton = document.getElementById('fromTopLeagues');
@@ -182,14 +182,39 @@ const getFilteredData = () => {
 
   console.log(filteredData);
 
-  setPointData(filteredData);
+  setPointData(filteredData, topFilter);
   setLeagues(filteredData);
 
   return filteredData;
 }
 
+const getOrder = (region) => {
+  switch (region) {
+    case 'Top':
+      return 6;
+    case regions.europe:
+      return 5;
+    case regions.southAmerica:
+      return 4;
+    case regions.northAmerica:
+      return 3;
+    case regions.asia:
+      return 2;
+    case regions.africa:
+      return 1;
+    case regions.none:
+      return 0;
+    default:
+      return 0;
+  }
+}
+
 const getCsv = async () => {
   data = await d3.csv('./football-transfers.csv');
+  data.forEach(t => {
+    t.fromOrder = getOrder(t[fromRegionField]);
+    t.toOrder = getOrder(t[toRegionField]);
+  });
   // console.log(data);
 
   getFilteredData();

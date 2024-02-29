@@ -9,7 +9,7 @@ const width = fromLeaguesContainer.clientWidth;
 const widthTo = toLeaguesContainer.clientWidth;
 // const height = 700;
 
-console.log(width, widthTo);
+// console.log(width, widthTo);
 
 export const setLeagues = (data) => {
   let svgFromElement = null;
@@ -17,7 +17,7 @@ export const setLeagues = (data) => {
   let svgToElement = null;
   let svgTo = null;
 
-  console.log('setLeagues', data);
+  // console.log('setLeagues', data);
   const fromLeaguesObj = {};
   const toLeaguesObj = {};
 
@@ -38,7 +38,7 @@ export const setLeagues = (data) => {
       toLeaguesObj[t[toLeagueField]].region = t[toRegionField];
     }
   });
-  console.log(fromLeaguesObj, toLeaguesObj);
+  // console.log(fromLeaguesObj, toLeaguesObj);
   const fromData = Object.entries(fromLeaguesObj).sort((a, b) => b[1].count - a[1].count);
   const maxFrom = fromData[0][1].count + 10;
 

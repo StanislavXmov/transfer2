@@ -80,6 +80,7 @@ body {
 .transfers {
   height: 780px;
   display: grid;
+  align-items: start;
   grid-template-columns: 6fr 4fr;
 }
 

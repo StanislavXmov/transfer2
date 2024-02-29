@@ -380,11 +380,17 @@ const addFeeAxisTitles = () => {
     .attr("id", 'axisYFeeBorder');
 }
 
-const createFeePoints = (data) => {
+const createFeePoints = (data, topFilter) => {
   // console.log('createFeePoints', data);
+  let feeSortedData = [...data];
+  if (topFilter === inType) {
+    feeSortedData.sort((t1, t2) => t1.fromOrder - t2.fromOrder);
+  } else {
+    feeSortedData.sort((t1, t2) => t1.toOrder - t2.toOrder);
+  }
   const feeDataState = {};
 
-  data.forEach(t => {
+  feeSortedData.forEach(t => {
     if (feeDataState[getMarketValue(t[marketValueField])]) {
       feeDataState[getMarketValue(t[marketValueField])].counter += 1;
     } else {
@@ -534,7 +540,7 @@ const createFeePoints = (data) => {
   svg.append("g")
     .attr("id", "group2")
     .selectAll()
-    .data(data)
+    .data(feeSortedData)
     .join("g")
       .on('mouseover', feeCircleOver)
       .on('mouseout', circleOut)
@@ -603,7 +609,7 @@ const clearGraph = () => {
   line && line.remove();
 }
 
-export const setPointData = (data) => {
+export const setPointData = (data, topFilter) => {
   clearGraph();
   let filtered = [];
   allDataState = data;
@@ -615,5 +621,5 @@ export const setPointData = (data) => {
   dataState = filtered;
   dataState = dataState.map((d, i) => ({...d, i}));
   createPoints(filtered);
-  createFeePoints(dataFeeState);
+  createFeePoints(dataFeeState, topFilter);
 }
