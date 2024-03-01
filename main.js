@@ -3,7 +3,7 @@ import './style.scss';
 import { fromRegionField, inType, typeField, regions, outType, insideType, toRegionField } from './fields';
 import { colors, setPointData } from './transfersPoints';
 import { setLeagues } from './transfersLeagues';
-
+import { setDatas } from './transfersDatas';
 let topFilter = inType;
 
 let europe = true; // 5
@@ -184,6 +184,7 @@ const getFilteredData = () => {
 
   setPointData(filteredData, topFilter);
   setLeagues(filteredData);
+  setDatas(filteredData);
 
   return filteredData;
 }

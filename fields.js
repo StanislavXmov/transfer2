@@ -58,6 +58,7 @@ export const toTeamField = "To Team";
 export const marketValueField ='Market value';
 export const feeField ='Fee';
 export const ageField ='Age';
+export const nationalityField ='Nationality';
 export const positionField ='Position';
 
 export const outType = 'Out';

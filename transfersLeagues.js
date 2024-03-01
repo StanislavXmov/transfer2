@@ -40,10 +40,10 @@ export const setLeagues = (data) => {
   });
   // console.log(fromLeaguesObj, toLeaguesObj);
   const fromData = Object.entries(fromLeaguesObj).sort((a, b) => b[1].count - a[1].count);
-  const maxFrom = fromData[0][1].count + 10;
+  const maxFrom = fromData[0][1].count;
 
   const toData = Object.entries(toLeaguesObj).sort((a, b) => b[1].count - a[1].count);
-  const maxTo = toData[0][1].count + 10;
+  const maxTo = toData[0][1].count;
 
   const wFromdY = fromData.length> 15 ? 10 : 20;
   const fromHeight = fromData.length * wFromdY + 32;
