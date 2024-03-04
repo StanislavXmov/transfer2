@@ -1,5 +1,13 @@
 import * as d3 from 'd3';
-import { fromLeagueField, fromRegionField, toLeagueField, toRegionField } from "./fields";
+import {
+  countries,
+  fromCountryField,
+  fromLeagueField,
+  fromRegionField,
+  toCountryField,
+  toLeagueField,
+  toRegionField
+} from "./fields";
 import { colors } from './transfersPoints';
 
 const fromLeaguesContainer = document.getElementById('fromLeagues');
@@ -21,6 +29,8 @@ export const setLeagues = (data) => {
   const fromLeaguesObj = {};
   const toLeaguesObj = {};
 
+  let flagDX = 12;
+
   data.forEach(t => {
     if (fromLeaguesObj[t[fromLeagueField]]) {
       fromLeaguesObj[t[fromLeagueField]].count += 1;
@@ -28,6 +38,7 @@ export const setLeagues = (data) => {
       fromLeaguesObj[t[fromLeagueField]] = {};
       fromLeaguesObj[t[fromLeagueField]].count = 1;
       fromLeaguesObj[t[fromLeagueField]].region = t[fromRegionField];
+      fromLeaguesObj[t[fromLeagueField]].country = t[fromCountryField];
     }
 
     if (toLeaguesObj[t[toLeagueField]]) {
@@ -36,6 +47,7 @@ export const setLeagues = (data) => {
       toLeaguesObj[t[toLeagueField]] = {};
       toLeaguesObj[t[toLeagueField]].count = 1;
       toLeaguesObj[t[toLeagueField]].region = t[toRegionField];
+      toLeaguesObj[t[toLeagueField]].country = t[toCountryField];
     }
   });
   // console.log(fromLeaguesObj, toLeaguesObj);
@@ -56,14 +68,16 @@ export const setLeagues = (data) => {
     svgFromElement = d3.select("#fromLeagues")
       .append("svg")
         .attr("id", 'fromLeaguesSvg')
-        .attr("width", width)
-        .attr("height", fromHeight);
+        .attr("width", width - flagDX * 2)
+        .attr("height", fromHeight)
+        .attr("transform", `translate(${flagDX}, ${0})`);
   } else {
     svgFromElement = d3.select("#fromLeagues")
       .append("svg")
         .attr("id", 'fromLeaguesSvg')
-        .attr("width", width)
-        .attr("height", fromHeight);
+        .attr("width", width - flagDX * 2)
+        .attr("height", fromHeight)
+        .attr("transform", `translate(${flagDX}, ${0})`);
   }
 
   if (document.getElementById('toLeaguesSvg')) {
@@ -71,14 +85,16 @@ export const setLeagues = (data) => {
     svgToElement = d3.select("#toLeagues")
       .append("svg")
         .attr("id", 'toLeaguesSvg')
-        .attr("width", width)
-        .attr("height", toHeight);
+        .attr("width", width - flagDX * 2)
+        .attr("height", toHeight)
+        .attr("transform", `translate(${flagDX}, ${0})`);
   } else {
     svgToElement = d3.select("#toLeagues")
       .append("svg")
         .attr("id", 'toLeaguesSvg')
-        .attr("width", width)
-        .attr("height", toHeight);
+        .attr("width", width - flagDX * 2)
+        .attr("height", toHeight)
+        .attr("transform", `translate(${flagDX}, ${0})`);
   }
 
   if (document.getElementById('fromLeaguesData')) {
@@ -105,7 +121,7 @@ export const setLeagues = (data) => {
   {
   const x = d3.scaleLinear()
     .domain([0, maxFrom])
-    .range([0, width - 12]);
+    .range([0, width - 12 - flagDX * 2]);
   svgFrom.append("g")
     .attr("transform", `translate(${0}, ${fromHeight - 22})`)
     .attr("class", `domainX`)
@@ -123,7 +139,7 @@ export const setLeagues = (data) => {
     .data(fromData)
     .enter()
     .append("rect")
-    .attr("x", x(0) )
+    .attr("x", x(0))
     .attr("y", d => y(d[0]))
     .attr("width", d => x(d[1].count))
     .attr("height", y.bandwidth() )
@@ -139,11 +155,35 @@ export const setLeagues = (data) => {
   svgFrom.selectAll('.domainY')
     .selectAll("text")
     .attr("text-anchor", 'start');
+  const nodes = svgFrom
+    .selectAll("rect")
+    .nodes();
+  const flags = document.querySelectorAll('[data-flag-from]');
+  flags.forEach(f => f.remove());
+  
+  nodes.forEach((n, i) => {
+    // console.log(fromData[i]);
+    const y = Number(n.getAttribute('y'));
+    const span = document.createElement('span');
+    span.dataset.flagFrom = true;
+    span.textContent = countries[fromData[i][1].country];
+    if (wFromdY === 20) {
+      span.classList.add('flagLarge');
+      span.style.left = '-4px';
+    } else {
+      span.classList.add('flag');
+      span.style.left = '0px';
+    }
+    span.style.position = 'absolute';
+    span.style.top = `${y}px`;
+    fromLeaguesContainer.append(span);
+  });
+
   }
   {
   const x = d3.scaleLinear()
     .domain([0, maxTo])
-    .range([0, width - 12]);
+    .range([0, width - 12 - flagDX * 2]);
   svgTo.append("g")
     .attr("transform", `translate(${0}, ${toHeight - 22})`)
     .attr("class", `domainX`)
@@ -177,5 +217,28 @@ export const setLeagues = (data) => {
   svgTo.selectAll('.domainY')
     .selectAll("text")
     .attr("text-anchor", 'start');
+   const nodes = svgTo
+    .selectAll("rect")
+    .nodes();
+  const flags = document.querySelectorAll('[data-flag-to]');
+  flags.forEach(f => f.remove());
+  
+  nodes.forEach((n, i) => {
+    // console.log(toData[i]);
+    const y = Number(n.getAttribute('y'));
+    const span = document.createElement('span');
+    span.dataset.flagTo = true;
+    span.textContent = countries[toData[i][1].country];
+    if (wTodY === 20) {
+      span.classList.add('flagLarge');
+      span.style.left = '-4px';
+    } else {
+      span.classList.add('flag');
+      span.style.left = '0px';
+    }
+    span.style.position = 'absolute';
+    span.style.top = `${y}px`;
+    toLeaguesContainer.append(span);
+  });
   }
 }

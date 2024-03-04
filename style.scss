@@ -75,7 +75,13 @@ body {
   text-align: left;
   margin: 0 12px 0 0;
 }
+.regionsSubTitle {
+  text-align: left;
+  margin: 0 12px 0 0;
+  grid-column-start: 2;
+  grid-column-end: 3;
 
+}
 
 .transfers {
   height: 780px;
@@ -94,7 +100,7 @@ body {
 }
 
 svg g text {
-  font-size: 9px
+  font-size: 9px;
 }
 
 .axisYTop {
@@ -177,19 +183,27 @@ svg g text {
 .leaguesWrapper {
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
-// #fromLeagues, #toLeagues {
-//   border: 2px solid #c1c0c0;
-// }
+#fromLeagues, #toLeagues, #nationalityData {
+  // border: 2px solid #c1c0c0;
+  position: relative;
+}
 
 .leaguesHeaders {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .leaguesSubTitle {
   font-size: 14px;
   margin: 0;
+}
+
+.flag {
+  font-size: 10px;
+}
+.flagLarge {
+  font-size: 14px;
 }
