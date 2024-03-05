@@ -184,7 +184,7 @@ const getFilteredData = () => {
 
   setPointData(filteredData, topFilter);
   setLeagues(filteredData);
-  setDatas(filteredData);
+  setDatas(filteredData, data);
 
   return filteredData;
 }
