@@ -344,29 +344,30 @@ const createPoints = (data) => {
           }
         })
         .attr("stroke", d => {
-          if (d[fromRegionField] === region && d[toRegionField] === region) {
-            return "#00000060";
-          } else {
-            getToColor(d)
-          }
+          return "#00000060";
+          // if (d[fromRegionField] === region && d[toRegionField] === region) {
+          //   return "#00000060";
+          // } else {
+          //   getToColor(d)
+          // }
         })
         .attr("data-index", (d, i) => d[transferIdField])
         .attr("data-left", d => getX(d)(getMarketValue(d[marketValueField])) + paddingLeft - 3)
         .attr("data-top", d => {
           return getY(d)(d[feeField] === '?' ? 0 : d[feeField]) - axisStep / 4 - 3 - dy - 20;
         })
-        .select(function() { return this.parentNode; })
-          .append("path")
-          .attr("data-index", (d, i) => d[transferIdField])
-          .attr("d", d => {
-            if (d[typeField] === insideType || d[typeField] === inType) {
-              return inD
-            } else {
-              return outD;
-            }
-          })
-          .style("pointer-events", 'none')
-          .attr('stroke', '#FFFFFF');
+        // .select(function() { return this.parentNode; })
+        //   .append("path")
+        //   .attr("data-index", (d, i) => d[transferIdField])
+        //   .attr("d", d => {
+        //     if (d[typeField] === insideType || d[typeField] === inType) {
+        //       return inD
+        //     } else {
+        //       return outD;
+        //     }
+        //   })
+        //   .style("pointer-events", 'none')
+        //   .attr('stroke', '#FFFFFF');
 }
 
 const addFeeAxisTitles = () => {
@@ -571,11 +572,12 @@ const createFeePoints = (data, topFilter) => {
           }
         })
         .attr("stroke", d => {
-          if (d[fromRegionField] === region && d[toRegionField] === region) {
-            return "#00000060";
-          } else {
-            getToColor(d)
-          }
+          return "#00000060";
+          // if (d[fromRegionField] === region && d[toRegionField] === region) {
+          //   return "#00000060";
+          // } else {
+          //   getToColor(d)
+          // }
         })
       .attr("data-index", (d, i) => d[transferIdField])
       .attr("data-left", d => getX(d)(getMarketValue(d[marketValueField])) + paddingLeft - 3)
@@ -586,18 +588,18 @@ const createFeePoints = (data, topFilter) => {
         const axisDy = (dy === 3 ? 6 : 3);
         return height - 24 + Number(d[feeField] === '?' ? 0 : d[feeField]) - n * dy - axisDy;
       })
-      .select(function() { return this.parentNode; })
-        .append("path")
-        .attr("data-index", (d, i) => d[transferIdField])
-        .attr("d", d => {
-          if (d[typeField] === insideType || d[typeField] === inType) {
-            return inD
-          } else {
-            return outD;
-          }
-        })
-        .style("pointer-events", 'none')
-        .attr('stroke', '#FFFFFF');
+      // .select(function() { return this.parentNode; })
+      //   .append("path")
+      //   .attr("data-index", (d, i) => d[transferIdField])
+      //   .attr("d", d => {
+      //     if (d[typeField] === insideType || d[typeField] === inType) {
+      //       return inD
+      //     } else {
+      //       return outD;
+      //     }
+      //   })
+      //   .style("pointer-events", 'none')
+      //   .attr('stroke', '#FFFFFF');
 }
 
 const clearGraph = () => {

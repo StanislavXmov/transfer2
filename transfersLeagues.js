@@ -52,10 +52,21 @@ export const setLeagues = (data) => {
   });
   // console.log(fromLeaguesObj, toLeaguesObj);
   const fromData = Object.entries(fromLeaguesObj).sort((a, b) => b[1].count - a[1].count);
-  const maxFrom = fromData[0][1].count;
+  let maxFrom = 0;
+  if (fromData.length === 0) {
+    maxFrom = 10;
+  } else {
+    maxFrom = fromData[0][1].count;
+  }
 
   const toData = Object.entries(toLeaguesObj).sort((a, b) => b[1].count - a[1].count);
-  const maxTo = toData[0][1].count;
+  let maxTo = 0;
+  if (toData.length === 0) {
+    maxTo = 10;
+  } else {
+    maxTo = toData[0][1].count;
+  }
+ 
 
   const wFromdY = fromData.length> 15 ? 10 : 20;
   const fromHeight = fromData.length * wFromdY + 32;
@@ -119,13 +130,30 @@ export const setLeagues = (data) => {
       .attr("id", 'toLeaguesData');
   }
   {
+  const ticks = [];
   const x = d3.scaleLinear()
     .domain([0, maxFrom])
     .range([0, width - 12 - flagDX * 2]);
   svgFrom.append("g")
     .attr("transform", `translate(${0}, ${fromHeight - 22})`)
     .attr("class", `domainX`)
-    .call(d3.axisBottom(x))
+    // .call(d3.axisBottom(x))
+    .call(d3.axisBottom(x).tickFormat((d, i) => {  
+      const n = Math.floor(d);
+      if (i === 0) {
+        return n;
+      } else {
+        if (n < 1) {
+          return '';
+        } else {
+          if (ticks.includes(n)) {
+            return '';
+          }
+          ticks.push(n);
+          return n;
+        }
+      }
+    }))
     .call(g => g.select(".domain").remove());
 
   svgFrom.selectAll('.domainX')
@@ -181,13 +209,30 @@ export const setLeagues = (data) => {
 
   }
   {
+  const ticks = [];
   const x = d3.scaleLinear()
     .domain([0, maxTo])
     .range([0, width - 12 - flagDX * 2]);
   svgTo.append("g")
     .attr("transform", `translate(${0}, ${toHeight - 22})`)
     .attr("class", `domainX`)
-    .call(d3.axisBottom(x))
+    // .call(d3.axisBottom(x))
+    .call(d3.axisBottom(x).tickFormat((d, i) => {  
+      const n = Math.floor(d);
+      if (i === 0) {
+        return n;
+      } else {
+        if (n < 1) {
+          return '';
+        } else {
+          if (ticks.includes(n)) {
+            return '';
+          }
+          ticks.push(n);
+          return n;
+        }
+      }
+    }))
     .call(g => g.select(".domain").remove());
 
   svgTo.selectAll('.domainX')

@@ -48,10 +48,20 @@ export const setDatas = (data) => {
 
   // console.log(Object.keys(nationalityData));
   const ageDataListSorted = Object.entries(ageData).sort((a, b) => b[1].count - a[1].count);
-  const maxAge = ageDataListSorted[0][1].count;
+  let maxAge = 0;
+  if (ageDataListSorted.length === 0) {
+    maxAge = 10;
+  } else {
+    maxAge = ageDataListSorted[0][1].count;
+  }
 
   const nationalityDataList = Object.entries(nationalityData).sort((a, b) => b[1].count - a[1].count);
-  const maxNationality = nationalityDataList[0][1].count;
+  let maxNationality = 0;
+  if (nationalityDataList.length === 0) {
+    maxNationality = 10;
+  } else {
+    maxNationality = nationalityDataList[0][1].count;
+  }
 
   const wAgedY = ageDataListSorted.length> 15 ? 10 : 20;
   const ageHeight = ageDataListSorted.length * wAgedY + 32;
@@ -154,13 +164,30 @@ export const setDatas = (data) => {
   //     // .attr("text-anchor", 'start');
   // }
   {
+    const ticks = [];
     const x = d3.scaleLinear()
       .domain([0, maxNationality])
-      .range([0, width - 12 - flagDX * 2]);
+      .range([0, width - 12 - flagDX * 2])
     nationalityDataSvg.append("g")
       .attr("transform", `translate(${0}, ${nationalityHeight - 22})`)
       .attr("class", `domainX`)
-      .call(d3.axisBottom(x))
+      // .call(d3.axisBottom(x))
+      .call(d3.axisBottom(x).tickFormat((d, i) => {  
+        const n = Math.floor(d);
+        if (i === 0) {
+          return n;
+        } else {
+          if (n < 1) {
+            return '';
+          } else {
+            if (ticks.includes(n)) {
+              return '';
+            }
+            ticks.push(n);
+            return n;
+          }
+        }
+      }))
       .call(g => g.select(".domain").remove());
   
     nationalityDataSvg.selectAll('.domainX')
