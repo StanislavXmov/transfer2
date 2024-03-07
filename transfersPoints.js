@@ -269,7 +269,7 @@ const circleOver = (e) => {
       transferInfo.style.bottom = `auto`;
       
       name.textContent = d[playerField];
-      playerImage.src = players[d[playerField]].img;
+      // playerImage.src = players[d[playerField]].img;
       age.textContent = d['Age'];
       fromTeam.textContent = d[fromTeamField];
       fromLeague.textContent = d[fromLeagueField];
@@ -295,7 +295,7 @@ const feeCircleOver = (e) => {
       transferInfo.style.top = `auto`;
 
       name.textContent = d[playerField];
-      playerImage.src = players[d[playerField]].img;
+      // playerImage.src = players[d[playerField]].img;
       age.textContent = d['Age'];
       fromTeam.textContent = d[fromTeamField];
       fromLeague.textContent = d[fromLeagueField];
@@ -626,4 +626,16 @@ export const setPointData = (data, topFilter) => {
   dataState = dataState.map((d, i) => ({...d, i}));
   createPoints(filtered);
   createFeePoints(dataFeeState, topFilter);
+}
+
+export const setPointsOpacity = (v) => {
+  d3.selectAll(`[data-index]`)
+  .style("opacity", v);
+}
+
+export const setPointsOpacityByFiltered = (filtered) => {
+  filtered.forEach((d) => {
+    d3.selectAll(`[data-index="${d[transferIdField]}"]`)
+    .style("opacity", 1)
+  });
 }

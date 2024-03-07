@@ -9,7 +9,7 @@ import {
   toLeagueField,
   toRegionField
 } from "./fields";
-import { colors } from './transfersPoints';
+import { colors, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
 
 const ageDataContainer = document.getElementById('ageData');
 // const nationalityDataContainer = document.getElementById('nationalityData');
@@ -17,6 +17,10 @@ const ageDataContainer = document.getElementById('ageData');
 const ageWidth = ageDataContainer.clientWidth;
 // const width = nationalityDataContainer.clientWidth;
 
+const filteredByAge = (data, age) => {
+  let filtered = data.filter(d => d[ageField] === age);
+  return filtered;
+}
 
 export const setDatas = (data, fullData) => {
   let ageDataElement = null;
@@ -158,7 +162,16 @@ export const setDatas = (data, fullData) => {
           .attr("height", (d) => {
             return y(0) - y(d[1].count);
           })
-          .attr("width", x.bandwidth());
+          .attr("width", x.bandwidth())
+          .style("cursor", 'pointer')
+          .on('mouseover', (e, d) => {
+            setPointsOpacity(0.1);
+            const f = filteredByAge(data, d[0]);
+            setPointsOpacityByFiltered(f);
+          })
+          .on('mouseout', (e, d) => {
+            setPointsOpacity(1);
+          });
     ageDataSvg.append("g")
       .selectAll()
       .data(ageFilteredDataList)
