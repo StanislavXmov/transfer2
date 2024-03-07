@@ -68,10 +68,12 @@ export const setLeagues = (data) => {
   }
  
 
-  const wFromdY = fromData.length> 15 ? 10 : 20;
+  // const wFromdY = fromData.length> 15 ? 10 : 20;
+  const wFromdY = 15;
   const fromHeight = fromData.length * wFromdY + 32;
 
-  const wTodY = toData.length> 15 ? 10 : 20;
+  // const wTodY = toData.length> 15 ? 10 : 20;
+  const wTodY = 15;
   const toHeight = toData.length * wTodY + 32;
 
   if (document.getElementById('fromLeaguesSvg')) {
@@ -195,13 +197,13 @@ export const setLeagues = (data) => {
     const span = document.createElement('span');
     span.dataset.flagFrom = true;
     span.textContent = countries[fromData[i][1].country];
-    if (wFromdY === 20) {
-      span.classList.add('flagLarge');
-      span.style.left = '-4px';
-    } else {
+    // if (wFromdY === 20) {
+    //   span.classList.add('flagLarge');
+    //   span.style.left = '-4px';
+    // } else {
       span.classList.add('flag');
       span.style.left = '0px';
-    }
+    // }
     span.style.position = 'absolute';
     span.style.top = `${y}px`;
     fromLeaguesContainer.append(span);
@@ -274,13 +276,13 @@ export const setLeagues = (data) => {
     const span = document.createElement('span');
     span.dataset.flagTo = true;
     span.textContent = countries[toData[i][1].country];
-    if (wTodY === 20) {
-      span.classList.add('flagLarge');
-      span.style.left = '-4px';
-    } else {
+    // if (wTodY === 20) {
+    //   span.classList.add('flagLarge');
+    //   span.style.left = '-4px';
+    // } else {
       span.classList.add('flag');
       span.style.left = '0px';
-    }
+    // }
     span.style.position = 'absolute';
     span.style.top = `${y}px`;
     toLeaguesContainer.append(span);
