@@ -69,7 +69,7 @@ export const setLeagues = (data) => {
  
 
   // const wFromdY = fromData.length> 15 ? 10 : 20;
-  const wFromdY = 15;
+  const wFromdY = 18;
   const fromHeight = fromData.length * wFromdY + 32;
 
   // const wTodY = toData.length> 15 ? 10 : 20;
@@ -83,14 +83,14 @@ export const setLeagues = (data) => {
         .attr("id", 'fromLeaguesSvg')
         .attr("width", width - flagDX * 2)
         .attr("height", fromHeight)
-        .attr("transform", `translate(${flagDX}, ${0})`);
+        .attr("transform", `translate(${0}, ${0})`);
   } else {
     svgFromElement = d3.select("#fromLeagues")
       .append("svg")
         .attr("id", 'fromLeaguesSvg')
         .attr("width", width - flagDX * 2)
         .attr("height", fromHeight)
-        .attr("transform", `translate(${flagDX}, ${0})`);
+        .attr("transform", `translate(${0}, ${0})`);
   }
 
   if (document.getElementById('toLeaguesSvg')) {
@@ -100,14 +100,14 @@ export const setLeagues = (data) => {
         .attr("id", 'toLeaguesSvg')
         .attr("width", width - flagDX * 2)
         .attr("height", toHeight)
-        .attr("transform", `translate(${flagDX}, ${0})`);
+        .attr("transform", `translate(${0}, ${0})`);
   } else {
     svgToElement = d3.select("#toLeagues")
       .append("svg")
         .attr("id", 'toLeaguesSvg')
         .attr("width", width - flagDX * 2)
         .attr("height", toHeight)
-        .attr("transform", `translate(${flagDX}, ${0})`);
+        .attr("transform", `translate(${0}, ${0})`);
   }
 
   if (document.getElementById('fromLeaguesData')) {
@@ -184,6 +184,7 @@ export const setLeagues = (data) => {
     .selectAll("line").remove();
   svgFrom.selectAll('.domainY')
     .selectAll("text")
+    .style("font-size", '12px')
     .attr("text-anchor", 'start');
   const nodes = svgFrom
     .selectAll("rect")
@@ -202,7 +203,7 @@ export const setLeagues = (data) => {
     //   span.style.left = '-4px';
     // } else {
       span.classList.add('flag');
-      span.style.left = '0px';
+      span.style.left = '-15px';
     // }
     span.style.position = 'absolute';
     span.style.top = `${y}px`;
@@ -263,6 +264,7 @@ export const setLeagues = (data) => {
     .selectAll("line").remove();
   svgTo.selectAll('.domainY')
     .selectAll("text")
+    .style("font-size", '12px')
     .attr("text-anchor", 'start');
    const nodes = svgTo
     .selectAll("rect")
@@ -281,7 +283,7 @@ export const setLeagues = (data) => {
     //   span.style.left = '-4px';
     // } else {
       span.classList.add('flag');
-      span.style.left = '0px';
+      span.style.left = '-15px';
     // }
     span.style.position = 'absolute';
     span.style.top = `${y}px`;
