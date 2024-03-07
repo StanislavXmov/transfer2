@@ -186,7 +186,7 @@ svg g text {
 .leaguesWrapper {
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 #fromLeagues, #toLeagues, #nationalityData {
@@ -196,7 +196,7 @@ svg g text {
 
 .leaguesHeaders {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .leaguesSubTitle {

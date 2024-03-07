@@ -4,7 +4,7 @@ import { colors } from './transfersPoints';
 
 const treeMapNationalityContainer = document.getElementById('treeMapNationality');
 const width = treeMapNationalityContainer.clientWidth;
-const height = 300;
+const height = 220;
 
 export const setTreeMap = (data) => {
 
