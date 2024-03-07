@@ -4,6 +4,7 @@ import { fromRegionField, inType, typeField, regions, outType, insideType, toReg
 import { colors, setPointData } from './transfersPoints';
 import { setLeagues } from './transfersLeagues';
 import { setDatas } from './transfersDatas';
+import { setTreeMap } from './transfersTreemap';
 let topFilter = inType;
 
 let europe = true; // 5
@@ -185,6 +186,7 @@ const getFilteredData = () => {
   setPointData(filteredData, topFilter);
   setLeagues(filteredData);
   setDatas(filteredData, data);
+  setTreeMap(filteredData);
 
   return filteredData;
 }

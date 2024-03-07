@@ -5,6 +5,7 @@ import {
   fromLeagueField,
   fromRegionField,
   nationalityField,
+  regionNatField,
   toLeagueField,
   toRegionField
 } from "./fields";
@@ -28,7 +29,6 @@ export const setDatas = (data, fullData) => {
   const nationalityData = {};
 
   let flagDX = 12;
-  // const nationalitySet = new Set();
 
   data.forEach(t => {
     if (nationalityData[t[nationalityField]]) {
@@ -36,7 +36,7 @@ export const setDatas = (data, fullData) => {
     } else {
       nationalityData[t[nationalityField]] = {};
       nationalityData[t[nationalityField]].count = 1;
-      // nationalitySet.add(t[nationalityField]);
+      nationalityData[t[nationalityField]].region = t[regionNatField];
     }
   });
 
@@ -220,7 +220,7 @@ export const setDatas = (data, fullData) => {
       .attr("y", d => y(d[0]))
       .attr("width", d => x(d[1].count))
       .attr("height", y.bandwidth() )
-      .attr("fill", '#a6faa1');
+      .attr("fill", d => colors[d[1].region]);
   
     nationalityDataSvg.append("g")
       .attr("class", `domainY`)

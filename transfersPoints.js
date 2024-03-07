@@ -7,6 +7,7 @@ export const colors = {
   // 'Top': '#FEFEFE',
   'Top': '#c0ffff',
   'Europe, ex. Top Leagues': '#1FB35F',
+  'Europe': '#1FB35F',
   'Asia': '#F051AE',
   'South America': '#FEB74F',
   'North America': '#55AFE1',
@@ -14,6 +15,7 @@ export const colors = {
   'No club': '#C1C1C1',
   'Retired': '#C1C1C1',
   'No Club': '#C1C1C1',
+  'Oceania': '#C1C1C1',
 };
 
 const container = document.getElementById('transfersPoints');
