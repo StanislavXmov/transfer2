@@ -1,10 +1,15 @@
 import * as d3 from 'd3';
 import { nationalityField, regionNatField } from './fields';
-import { colors } from './transfersPoints';
+import { colors, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
 
 const treeMapNationalityContainer = document.getElementById('treeMapNationality');
 const width = treeMapNationalityContainer.clientWidth;
 const height = 220;
+
+const filteredByNationality = (data, treeData) => {
+  let filtered = data.filter(d => d[nationalityField] === treeData.name && d[regionNatField] === treeData.region);
+  return filtered;
+}
 
 export const setTreeMap = (data) => {
 
@@ -82,14 +87,24 @@ export const setTreeMap = (data) => {
       })
       // .attr("fill-opacity", 0.6)
       .attr("width", d => d.x1 - d.x0)
-      .attr("height", d => d.y1 - d.y0);
+      .attr("height", d => d.y1 - d.y0)
+      .on('mouseover', (e, d) => {
+        setPointsOpacity(0.1);
+        const f = filteredByNationality(data, d.data);
+        setPointsOpacityByFiltered(f);
+      })
+      .on('mouseout', (e, d) => {
+        setPointsOpacity(1);
+      });
 
     leaf.append("clipPath")
+      .style("pointer-events", 'none')
       .attr("id", d => (d.clipUid = `clip${d.data.id}`))
       .append("use")
       .attr("xlink:href", d => `#${d.leafUid}`);
     
     leaf.append("text")
+      .style("pointer-events", 'none')
       .attr("clip-path", d => `url(#${d.clipUid})`)
       .selectAll("tspan")
       .data(d => d.data.name.split(/(?=[A-Z][a-z])|\s+/g).concat(d.value))
