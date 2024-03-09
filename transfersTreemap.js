@@ -28,6 +28,9 @@ export const setTreeMap = (data) => {
       }
     } else {
       regions[t[regionNatField]] = {};
+      regions[t[regionNatField]][t[nationalityField]] = {};
+      regions[t[regionNatField]][t[nationalityField]].count = 1;
+      regions[t[regionNatField]][t[nationalityField]].id = i;
     }
   });
 
