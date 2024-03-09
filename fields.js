@@ -101,7 +101,7 @@ export const countries = {
   "Ukraine": "🇺🇦",
   "Turkey": "🇹🇷",
   "Greece": "🇬🇷",
-  "-": null,
+  "-": "🏳️",
   "Mexico": "🇲🇽",
   "Brazil": "🇧🇷",
   "Belgium": "🇧🇪",
@@ -206,5 +206,5 @@ export const countries = {
   "Comoros": "🇰🇲",
   "Moldova": "🇲🇩",
   "Madagascar": "🇲🇬",
-  "": "",
+  "": "🏳️",
 }

@@ -8,7 +8,7 @@ import {
   toLeagueField,
   toRegionField
 } from "./fields";
-import { colors } from './transfersPoints';
+import { colors, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
 
 const fromLeaguesContainer = document.getElementById('fromLeagues');
 const toLeaguesContainer = document.getElementById('toLeagues');
@@ -18,6 +18,16 @@ const widthTo = toLeaguesContainer.clientWidth;
 // const height = 700;
 
 // console.log(width, widthTo);
+
+const filteredByTo = (data, to) => {
+  let filtered = data.filter(d => d[toLeagueField] === to);
+  return filtered;
+}
+
+const filteredByFrom = (data, from) => {
+  let filtered = data.filter(d => d[fromLeagueField] === from);
+  return filtered;
+}
 
 export const setLeagues = (data) => {
   let svgFromElement = null;
@@ -73,7 +83,7 @@ export const setLeagues = (data) => {
   const fromHeight = fromData.length * wFromdY + 32;
 
   // const wTodY = toData.length> 15 ? 10 : 20;
-  const wTodY = 15;
+  const wTodY = 18;
   const toHeight = toData.length * wTodY + 32;
 
   if (document.getElementById('fromLeaguesSvg')) {
@@ -173,12 +183,22 @@ export const setLeagues = (data) => {
     .attr("y", d => y(d[0]))
     .attr("width", d => x(d[1].count))
     .attr("height", y.bandwidth() )
-    .attr("fill", d => colors[d[1].region]);
+    .attr("fill", d => colors[d[1].region])
+    .style("cursor", 'pointer')
+    .on('mouseover', (e, d) => {
+      setPointsOpacity(0.1);
+      const f = filteredByFrom(data, d[0]);
+      setPointsOpacityByFiltered(f);
+    })
+    .on('mouseout', (e, d) => {
+      setPointsOpacity(1);
+    });
 
   svgFrom.append("g")
     .attr("class", `domainY`)
     .attr("transform", `translate(${12}, 0)`)
     .call(d3.axisLeft(y))
+    .style("pointer-events", 'none')
     .call(g => g.select(".domain").remove());
   svgFrom.selectAll('.domainY')
     .selectAll("line").remove();
@@ -198,6 +218,14 @@ export const setLeagues = (data) => {
     const span = document.createElement('span');
     span.dataset.flagFrom = true;
     span.textContent = countries[fromData[i][1].country];
+    span.addEventListener('mouseover', () => {
+      setPointsOpacity(0.1);
+      const f = filteredByFrom(data, fromData[i][0]);
+      setPointsOpacityByFiltered(f);
+    });
+    span.addEventListener('mouseout', () => {
+      setPointsOpacity(1);
+    });
     // if (wFromdY === 20) {
     //   span.classList.add('flagLarge');
     //   span.style.left = '-4px';
@@ -253,12 +281,22 @@ export const setLeagues = (data) => {
     .attr("y", d => y(d[0]))
     .attr("width", d => x(d[1].count))
     .attr("height", y.bandwidth() )
-    .attr("fill", d => colors[d[1].region]);
+    .attr("fill", d => colors[d[1].region])
+    .style("cursor", 'pointer')
+    .on('mouseover', (e, d) => {
+      setPointsOpacity(0.1);
+      const f = filteredByTo(data, d[0]);
+      setPointsOpacityByFiltered(f);
+    })
+    .on('mouseout', (e, d) => {
+      setPointsOpacity(1);
+    });
 
   svgTo.append("g")
     .attr("class", `domainY`)
     .attr("transform", `translate(${12}, 0)`)
     .call(d3.axisLeft(y))
+    .style("pointer-events", 'none')
     .call(g => g.select(".domain").remove());
   svgTo.selectAll('.domainY')
     .selectAll("line").remove();
@@ -278,6 +316,14 @@ export const setLeagues = (data) => {
     const span = document.createElement('span');
     span.dataset.flagTo = true;
     span.textContent = countries[toData[i][1].country];
+    span.addEventListener('mouseover', () => {
+      setPointsOpacity(0.1);
+      const f = filteredByTo(data, toData[i][0]);
+      setPointsOpacityByFiltered(f);
+    });
+    span.addEventListener('mouseout', () => {
+      setPointsOpacity(1);
+    });
     // if (wTodY === 20) {
     //   span.classList.add('flagLarge');
     //   span.style.left = '-4px';
