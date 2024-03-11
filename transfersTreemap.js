@@ -91,6 +91,7 @@ export const setTreeMap = (data) => {
       // .attr("fill-opacity", 0.6)
       .attr("width", d => d.x1 - d.x0)
       .attr("height", d => d.y1 - d.y0)
+      .style("cursor", 'pointer')
       .on('mouseover', (e, d) => {
         setPointsOpacity(0.1);
         const f = filteredByNationality(data, d.data);
