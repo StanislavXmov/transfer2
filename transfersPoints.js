@@ -269,7 +269,7 @@ const circleOver = (e) => {
       transferInfo.style.bottom = `auto`;
       
       name.textContent = d[playerField];
-      // playerImage.src = players[d[playerField]].img;
+      playerImage.src = players[d[playerField]].img;
       age.textContent = d['Age'];
       fromTeam.textContent = d[fromTeamField];
       fromLeague.textContent = d[fromLeagueField];
@@ -295,7 +295,7 @@ const feeCircleOver = (e) => {
       transferInfo.style.top = `auto`;
 
       name.textContent = d[playerField];
-      // playerImage.src = players[d[playerField]].img;
+      playerImage.src = players[d[playerField]].img;
       age.textContent = d['Age'];
       fromTeam.textContent = d[fromTeamField];
       fromLeague.textContent = d[fromLeagueField];
