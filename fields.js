@@ -55,12 +55,17 @@ export const toLeagueField = "To League";
 export const toLevelField = "To Level";
 export const toTeamField = "To Team";
 
+export const loanField ='Loan: start/end';
 export const regionNatField ='Region Nat';
 export const marketValueField ='Market value';
 export const feeField ='Fee';
 export const ageField ='Age';
 export const nationalityField ='Nationality';
 export const positionField ='Position';
+
+export const loanTypeNo = 'No';
+export const loanTypeStart = 'Start';
+export const loanTypeEnd = 'End';
 
 export const outType = 'Out';
 export const inType = 'In';

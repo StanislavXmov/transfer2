@@ -403,6 +403,7 @@ const createFeePoints = (data, topFilter) => {
   });
 
   const maxFee = Math.max(...Object.values(feeDataState).map(v => v.counter));
+  console.log({maxFee});
   for (const fee in feeDataState) {
     if (maxFee > 30) {
       feeDataState[fee].n = 3;

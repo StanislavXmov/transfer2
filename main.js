@@ -1,11 +1,25 @@
 import * as d3 from 'd3';
 import './style.scss';
-import { fromRegionField, inType, typeField, regions, outType, insideType, toRegionField, fromCountryField, toCountryField } from './fields';
+import {
+  fromRegionField,
+  inType,
+  typeField,
+  regions,
+  outType,
+  insideType,
+  toRegionField,
+  fromCountryField,
+  toCountryField,
+  loanField,
+  loanTypeNo
+} from './fields';
 import { colors, setPointData } from './transfersPoints';
 import { setLeagues } from './transfersLeagues';
 import { setDatas } from './transfersDatas';
 import { setTreeMap } from './transfersTreemap';
 let topFilter = inType;
+
+let loanFilter = loanTypeNo;
 
 let europe = true; // 5
 let southAmerica = true; // 4
@@ -28,6 +42,9 @@ const asiaButton = document.getElementById('asia');
 const africaButton = document.getElementById('africa');
 const noneButton = document.getElementById('none');
 
+const normalTransfersButton = document.getElementById('normalTransfers');
+const loanTransfersButton = document.getElementById('loanTransfers');
+
 const topButtons = [toTopLeaguesButton, fromTopLeaguesButton, insideTopLeaguesButton];
 const regionButtons = [
   europeButton,
@@ -37,6 +54,7 @@ const regionButtons = [
   africaButton,
   noneButton,
 ];
+const loanButtons = [normalTransfersButton, loanTransfersButton];
 
 const changeTopType = (target) => {
   topFilter = target.dataset.type;
@@ -67,6 +85,15 @@ const changeTopType = (target) => {
     default:
       break;
   }
+
+  getFilteredData();
+}
+
+const changeLoanFilter = (target) => {
+  loanFilter = target.dataset.type;
+  console.log(loanFilter);
+  loanButtons.forEach(b => b.classList.remove('active'));
+  target.classList.add('active');
 
   getFilteredData();
 }
@@ -145,6 +172,10 @@ regionButtons.forEach(b => {
   b.addEventListener('click', (e) => changeRegionFilter(e.target));
 });
 
+loanButtons.forEach(b => {
+  b.addEventListener('click', (e) => changeLoanFilter(e.target));
+});
+
 let data = [];
 let filteredData = [];
 
@@ -152,7 +183,16 @@ const getFilteredData = () => {
   // by type
   filteredData = data.filter(t => t[typeField] === topFilter);
 
-  //by region
+  // by loan
+
+  
+  if (loanFilter === loanTypeNo) {
+    filteredData = filteredData.filter(t => t[loanField] === loanFilter);
+  } else {
+    filteredData = filteredData.filter(t => t[loanField] !== loanTypeNo);
+  }
+
+  // by region
   let filterFiels = fromRegionField;
   if (topFilter === inType) {
     filterFiels = fromRegionField;
