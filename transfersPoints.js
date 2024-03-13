@@ -403,7 +403,6 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
   });
 
   const maxFee = Math.max(...Object.values(feeDataState).map(v => v.counter));
-  console.log({maxFee, maxFeeValue});
   for (const fee in feeDataState) {
     if (maxFee > 30) {
       feeDataState[fee].n = 3;
@@ -414,6 +413,8 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
 
   const maxFeeH = maxFee * 3;
   const height = 270;
+
+  const hy = Math.round((270 - 24) / maxFeeValue);
 
   let svg = null;
   if (!document.getElementById('feePoints')) {
@@ -554,8 +555,10 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
         let y = 0;
         setState(d, yState);
         const n = yState[getMarketValue(d[marketValueField])];
-        const dy = feeDataState[getMarketValue(d[marketValueField])].n;
-        const axisDy = (dy === 3 ? 6 : 3);
+        // const dy = feeDataState[getMarketValue(d[marketValueField])].n;
+        // const axisDy = (dy === 3 ? 6 : 3);
+        const dy = hy;
+        const axisDy = 3;
         y = height - 24 + Number(d[feeField] === '?' ? 0 : d[feeField]) - n * dy - axisDy;
         return `
           translate(
@@ -587,8 +590,10 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
       .attr("data-top", d => {
         setState(d, yStatePL);
         const n = yStatePL[getMarketValue(d[marketValueField])];
-        const dy = feeDataState[getMarketValue(d[marketValueField])].n;
-        const axisDy = (dy === 3 ? 6 : 3);
+        // const dy = feeDataState[getMarketValue(d[marketValueField])].n;
+        // const axisDy = (dy === 3 ? 6 : 3);
+        const dy = hy;
+        const axisDy = 3;
         return height - 24 + Number(d[feeField] === '?' ? 0 : d[feeField]) - n * dy - axisDy;
       })
       // .select(function() { return this.parentNode; })

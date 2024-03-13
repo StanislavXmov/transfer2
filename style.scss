@@ -158,7 +158,8 @@ svg g text {
 
 .axisYFeeBorder {
   position: absolute;
-  top: -18px;
+  // top: -18px;
+  top: 0px;
   left: -1px;
   transform-origin: top left;
   transform: rotateZ(-90deg) translateX(calc(-100%));
