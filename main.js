@@ -11,9 +11,11 @@ import {
   fromCountryField,
   toCountryField,
   loanField,
-  loanTypeNo
+  loanTypeNo,
+  marketValueField,
+  feeField
 } from './fields';
-import { colors, setPointData } from './transfersPoints';
+import { colors, setPointData, getMarketValue } from './transfersPoints';
 import { setLeagues } from './transfersLeagues';
 import { setDatas } from './transfersDatas';
 import { setTreeMap } from './transfersTreemap';
@@ -27,6 +29,8 @@ let northAmerica = true; // 3
 let asia = true; // 2
 let africa = true; // 1
 let none = true; // 0
+
+let maxFeeValue = 0;
 
 const toTopLeaguesButton = document.getElementById('toTopLeagues');
 const fromTopLeaguesButton = document.getElementById('fromTopLeagues');
@@ -223,7 +227,7 @@ const getFilteredData = () => {
 
   console.log(filteredData);
 
-  setPointData(filteredData, topFilter);
+  setPointData(filteredData, topFilter, maxFeeValue);
   setLeagues(filteredData);
   setDatas(filteredData, data);
   setTreeMap(filteredData);
@@ -252,12 +256,68 @@ const getOrder = (region) => {
   }
 }
 
+const getMaxValue = (data) => {
+  const obj = {};
+  data.forEach(t => {
+    if (obj[getMarketValue(t[marketValueField])]) {
+      obj[getMarketValue(t[marketValueField])].counter += 1;
+    } else {
+      obj[getMarketValue(t[marketValueField])] = {};
+      obj[getMarketValue(t[marketValueField])].counter = 1;
+    }
+  });
+  return Math.max(...Object.values(obj).map(v => v.counter));
+}
+
 const getCsv = async () => {
   data = await d3.csv('./football-transfers.csv');
   data.forEach(t => {
     t.fromOrder = getOrder(t[fromRegionField]);
     t.toOrder = getOrder(t[toRegionField]);
   });
+
+  {
+    let toTopData = data.filter(t => t[typeField] === inType);
+    toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
+    const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
+    const v = getMaxValue(filtered)
+    maxFeeValue = Math.max(maxFeeValue, v);
+  }
+  {
+    let toTopData = data.filter(t => t[typeField] === inType);
+    toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
+    const filtered = toTopData.filter(t => t[loanField] !== loanTypeNo);
+    const v = getMaxValue(filtered)
+    maxFeeValue = Math.max(maxFeeValue, v);
+  }
+  {
+    let toTopData = data.filter(t => t[typeField] === outType);
+    toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
+    const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
+    const v = getMaxValue(filtered)
+    maxFeeValue = Math.max(maxFeeValue, v);
+  }
+  {
+    let toTopData = data.filter(t => t[typeField] === outType);
+    toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
+    const filtered = toTopData.filter(t => t[loanField] !== loanTypeNo);
+    const v = getMaxValue(filtered)
+    maxFeeValue = Math.max(maxFeeValue, v);
+  }
+  {
+    let toTopData = data.filter(t => t[typeField] === insideType);
+    toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
+    const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
+    const v = getMaxValue(filtered)
+    maxFeeValue = Math.max(maxFeeValue, v);
+  }
+  {
+    let toTopData = data.filter(t => t[typeField] === insideType);
+    toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
+    const filtered = toTopData.filter(t => t[loanField] !== loanTypeNo);
+    const v = getMaxValue(filtered)
+    maxFeeValue = Math.max(maxFeeValue, v);
+  }
   // console.log(data);
 
   getFilteredData();

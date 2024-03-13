@@ -212,7 +212,7 @@ const getX = (d) => {
   }
 }
 
-const getMarketValue = (v) => Number(v.split(',').join(''));
+export const getMarketValue = (v) => Number(v.split(',').join(''));
 
 let yState = {};
 let yStatePL = {};
@@ -383,7 +383,7 @@ const addFeeAxisTitles = () => {
     .attr("id", 'axisYFeeBorder');
 }
 
-const createFeePoints = (data, topFilter) => {
+const createFeePoints = (data, topFilter, maxFeeValue) => {
   // console.log('createFeePoints', data);
   let feeSortedData = [...data];
   if (topFilter === inType) {
@@ -403,7 +403,7 @@ const createFeePoints = (data, topFilter) => {
   });
 
   const maxFee = Math.max(...Object.values(feeDataState).map(v => v.counter));
-  console.log({maxFee});
+  console.log({maxFee, maxFeeValue});
   for (const fee in feeDataState) {
     if (maxFee > 30) {
       feeDataState[fee].n = 3;
@@ -614,7 +614,7 @@ const clearGraph = () => {
   line && line.remove();
 }
 
-export const setPointData = (data, topFilter) => {
+export const setPointData = (data, topFilter, maxFeeValue) => {
   clearGraph();
   let filtered = [];
   allDataState = data;
@@ -626,7 +626,7 @@ export const setPointData = (data, topFilter) => {
   dataState = filtered;
   dataState = dataState.map((d, i) => ({...d, i}));
   createPoints(filtered);
-  createFeePoints(dataFeeState, topFilter);
+  createFeePoints(dataFeeState, topFilter, maxFeeValue);
 }
 
 export const setPointsOpacity = (v) => {
