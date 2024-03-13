@@ -95,7 +95,6 @@ const changeTopType = (target) => {
 
 const changeLoanFilter = (target) => {
   loanFilter = target.dataset.type;
-  console.log(loanFilter);
   loanButtons.forEach(b => b.classList.remove('active'));
   target.classList.add('active');
 
