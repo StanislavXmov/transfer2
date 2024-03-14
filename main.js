@@ -36,6 +36,10 @@ const toTopLeaguesButton = document.getElementById('toTopLeagues');
 const fromTopLeaguesButton = document.getElementById('fromTopLeagues');
 const insideTopLeaguesButton = document.getElementById('insideTopLeagues');
 
+const toTopCounter = document.getElementById('toTopCounter');
+const fromTopCounter = document.getElementById('fromTopCounter');
+const insideTopCounter = document.getElementById('insideTopCounter');
+
 const regionsFilters = document.getElementById('regionsFilters');
 const regionsSubTitle = document.getElementById('regionsSubTitle');
 
@@ -277,6 +281,7 @@ const getCsv = async () => {
 
   {
     let toTopData = data.filter(t => t[typeField] === inType);
+    toTopCounter.textContent = toTopData.length;
     toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
     const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
     const v = getMaxValue(filtered)
@@ -291,6 +296,7 @@ const getCsv = async () => {
   }
   {
     let toTopData = data.filter(t => t[typeField] === outType);
+    fromTopCounter.textContent = toTopData.length;
     toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
     const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
     const v = getMaxValue(filtered)
@@ -305,6 +311,7 @@ const getCsv = async () => {
   }
   {
     let toTopData = data.filter(t => t[typeField] === insideType);
+    insideTopCounter.textContent = toTopData.length;
     toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
     const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
     const v = getMaxValue(filtered)
