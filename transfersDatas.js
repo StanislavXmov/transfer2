@@ -17,6 +17,9 @@ const ageDataContainer = document.getElementById('ageData');
 const ageWidth = ageDataContainer.clientWidth;
 // const width = nationalityDataContainer.clientWidth;
 
+const averageAgeTitleWrapper = document.getElementById('averageAgeTitle');
+const averageAgeData = document.getElementById('averageAgeData');
+
 const filteredByAge = (data, age) => {
   let filtered = data.filter(d => d[ageField] === age);
   return filtered;
@@ -33,6 +36,21 @@ export const setDatas = (data, fullData) => {
   const nationalityData = {};
 
   let flagDX = 12;
+
+  const maxAges = data.reduce((acc, t) => acc + Number(t[ageField]), 0);
+  const averageAge = maxAges / data.length || 0;
+  const averageAgeTitle = Number(averageAge.toFixed(1))
+  const averageAgeT = {
+    [ageField]: averageAge
+  };
+
+  if (averageAge) {
+    averageAgeTitleWrapper.style.display = 'block';
+  } else {
+    averageAgeTitleWrapper.style.display = 'none';
+  }
+  
+  averageAgeData.textContent = `${averageAgeTitle}`;
 
   data.forEach(t => {
     if (nationalityData[t[nationalityField]]) {
@@ -150,7 +168,19 @@ export const setDatas = (data, fullData) => {
       .padding(0.1);
     const y = d3.scaleLinear()
       .domain([0, maxAge])
-      .range([ageHeight - 24, 0]);
+      .range([ageHeight - 38, 0]);
+
+    const averageAgeX = x(Math.floor(averageAge).toString()) + x.bandwidth() / 2;
+    averageAgeTitleWrapper.style.top = `${10}px`;
+    averageAgeTitleWrapper.style.left = `${averageAgeX + 20}px`;
+  
+    averageAge && ageDataSvg.append('line')
+      .attr("id", "averageAge")
+      .attr('x1', averageAgeX)
+      .attr('y1', 0)
+      .attr('x2', averageAgeX)
+      .attr('y2', ageHeight - 12)
+      .attr("stroke", "#00000020");
 
     ageDataSvg.append("g")
       .attr("fill", "#3470A4")
@@ -158,7 +188,7 @@ export const setDatas = (data, fullData) => {
         .data(ageFilteredDataList)
         .join("rect")
           .attr("x", (d) => x(d[0]))
-          .attr("y", (d) => y(d[1].count) + 12)
+          .attr("y", (d) => y(d[1].count) + 26)
           .attr("height", (d) => {
             return y(0) - y(d[1].count);
           })
@@ -179,7 +209,7 @@ export const setDatas = (data, fullData) => {
       .text(d => d[1].count)
       .attr("class", `textX`)
       .attr("x", d => x(d[0]) + x.bandwidth() / 2)
-      .attr("y", d => y(d[1].count) + 10)
+      .attr("y", d => y(d[1].count) + 24)
       .attr("text-anchor", 'middle');
 
     ageDataSvg.append("g")
@@ -190,6 +220,18 @@ export const setDatas = (data, fullData) => {
 
     ageDataSvg.selectAll('.domainX')
       .selectAll("line").remove();
+
+    ageDataSvg.selectAll('.domainX')
+      .selectAll(".tick")
+      .style("cursor", 'pointer')
+      .on('mouseover', (e, d) => {
+        setPointsOpacity(0.1);
+        const f = filteredByAge(data, d);
+        setPointsOpacityByFiltered(f);
+      })
+      .on('mouseout', (e, d) => {
+        setPointsOpacity(1);
+      });
   }
   // {
   //   const ticks = [];
