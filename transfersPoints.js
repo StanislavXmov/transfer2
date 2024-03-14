@@ -441,6 +441,13 @@ const addFeeAxisTitles = () => {
 
 const createFeePoints = (data, topFilter, maxFeeValue) => {
   // console.log('createFeePoints', data);
+  const maxMarketPaid = data.reduce((acc, t) => acc + getMarketValue(t[marketValueField]), 0);
+  const averageMarket = maxMarketPaid / data.length || 0;
+  const averageMarketTitle = (averageMarket / 1000000).toFixed(2)
+  const averageMarketT = {
+    [marketValueField]: averageMarket.toString()
+  };
+
   let feeSortedData = [...data];
   if (topFilter === inType) {
     feeSortedData.sort((t1, t2) => t1.fromOrder - t2.fromOrder);
@@ -470,9 +477,14 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
   const maxFeeH = maxFee * 3;
   const height = 270;
 
+  const averageMarketX = getX(averageMarketT)(averageMarket) + paddingLeft - 3;
+  const averageFeeY2 = height - 22 + 2;
+
   const hy = Math.round((270 - 24) / maxFeeValue);
 
   let svg = null;
+  let averageFreeMarketTitleWrapper = null;
+  let averageFreeMarketTitleData = null;
   if (!document.getElementById('feePoints')) {
     const wrapper = d3.select('#transfersPoints').append("div");
     wrapper.attr("class", 'feePointsWrapper');
@@ -482,6 +494,16 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
       .text("Player Market Value")
 
     addFeeAxisTitles();
+
+    averageFreeMarketTitleWrapper = wrapper.append("span")
+      .attr("class", 'averageFeeTitle')
+      .attr("id", 'averageFreeMarketTitle')
+      .text('Average for free transfers: ')
+    averageFreeMarketTitleData = averageFreeMarketTitleWrapper.append("span")
+      .attr("id", 'averageFreeMarketTitleData')
+      .text('0M');
+    
+
 
     svg = wrapper.append("svg")
       .attr("class", 'feePoints')
@@ -558,7 +580,27 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
       .attr("width", width)
       .attr("height", height)
       .attr("viewBox", [0, 0, width, height]);
+    averageFreeMarketTitleWrapper = d3.select('#averageFreeMarketTitle');
+    averageFreeMarketTitleData = d3.select('#averageFreeMarketTitleData');
   }
+
+  if (averageMarket) {
+    averageFreeMarketTitleWrapper.style("display", 'block');
+  } else {
+    averageFreeMarketTitleWrapper.style("display", 'none');
+  }
+  
+  averageFreeMarketTitleWrapper.style("top", `${- 8}px`);
+  averageFreeMarketTitleWrapper.style("left", `${averageMarketX + 4}px`);
+  averageFreeMarketTitleData.text(`${averageMarketTitle}M`);
+
+  averageMarket && svg.append('line')
+    .attr("id", "averageFreeMarket")
+    .attr('x1', averageMarketX)
+    .attr('y1', 0)
+    .attr('x2', averageMarketX)
+    .attr('y2', averageFeeY2)
+    .attr("stroke", "#00000020");
 
   const feeLineGroup = svg.append('g')
     .attr("id", 'feeLine');
@@ -672,11 +714,13 @@ const clearGraph = () => {
   const line = document.querySelector('#feeLine');
   const averageFeeLine = document.querySelector('#averageFee');
   const averageMarketLine = document.querySelector('#averageMarket');
+  const averageFreeMarketLine = document.querySelector('#averageFreeMarket');
   group1 && group1.remove();
   group2 && group2.remove();
   line && line.remove();
   averageFeeLine && averageFeeLine.remove();
   averageMarketLine && averageMarketLine.remove();
+  averageFreeMarketLine && averageFreeMarketLine.remove();
 }
 
 export const setPointData = (data, topFilter, maxFeeValue) => {
