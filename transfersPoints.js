@@ -42,6 +42,14 @@ const averageFeeTitleData = document.getElementById('averageFeeData');
 const averageMarketTitleWrapper = document.getElementById('averageMarketTitle');
 const averageMarketTitleData = document.getElementById('averageMarketData');
 
+const axisYTopPercent = document.getElementById('axisYTopPercent');
+
+const counters = {
+  all: 0,
+  normal: 0,
+  fee: 0,
+};
+
 const axisData = [0, 100_000, 1_000_000, 10_000_000, 100_000_000, 1_000_000_000];
 const axisDataY = [50_000, 100_000, 1_000_000, 10_000_000, 100_000_000, 1_000_000_000];
 const axisDataString = {
@@ -430,10 +438,15 @@ const createPoints = (data) => {
 
 const addFeeAxisTitles = () => {
   const wrapper = d3.select('.feePointsWrapper');
-  wrapper.append('div')
+  const title = wrapper.append('div')
     .attr("class", 'axisYFee')
     .attr("id", 'axisYFee')
     .text('Free transfers');
+  title.append('span')
+    .attr("id", 'axisYFeePercent')
+    .text(` ${Math.round(
+      100 / (counters.all / counters.fee)
+      )}%`);
   wrapper.append('div')
     .attr("class", 'axisYFeeBorder')
     .attr("id", 'axisYFeeBorder');
@@ -582,6 +595,11 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
       .attr("viewBox", [0, 0, width, height]);
     averageFreeMarketTitleWrapper = d3.select('#averageFreeMarketTitle');
     averageFreeMarketTitleData = d3.select('#averageFreeMarketTitleData');
+
+    d3.select('#axisYFeePercent')
+      .text(` ${Math.round(
+        100 / (counters.all / counters.fee)
+      )}%`);
   }
 
   if (averageMarket) {
@@ -731,6 +749,14 @@ export const setPointData = (data, topFilter, maxFeeValue) => {
   dataFeeState = data.filter(t => t[feeField] === '0' || t[feeField] === '?');
   filtered = data.filter(t => t[feeField] !== '0' && t[feeField] !== '?');
   // console.log({dataFeeState, filtered});
+
+  counters.all = data.length;
+  counters.normal = filtered.length;
+  counters.fee = dataFeeState.length;
+
+  axisYTopPercent.textContent = `${Math.round(
+    100 / (counters.all / counters.normal)
+    )}%`;
 
   dataState = filtered;
   dataState = dataState.map((d, i) => ({...d, i}));
