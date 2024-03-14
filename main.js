@@ -19,8 +19,8 @@ import { colors, setPointData, getMarketValue } from './transfersPoints';
 import { setLeagues } from './transfersLeagues';
 import { setDatas } from './transfersDatas';
 import { setTreeMap } from './transfersTreemap';
-let topFilter = inType;
 
+let topFilter = inType;
 let loanFilter = loanTypeNo;
 
 let europe = true; // 5
@@ -31,6 +31,8 @@ let africa = true; // 1
 let none = true; // 0
 
 let maxFeeValue = 0;
+
+const counters = {};
 
 const toTopLeaguesButton = document.getElementById('toTopLeagues');
 const fromTopLeaguesButton = document.getElementById('fromTopLeagues');
@@ -52,6 +54,9 @@ const noneButton = document.getElementById('none');
 
 const normalTransfersButton = document.getElementById('normalTransfers');
 const loanTransfersButton = document.getElementById('loanTransfers');
+
+const normalTransfersCounterButton = document.getElementById('normalTransfersCounter');
+const loanTransfersCounterButton = document.getElementById('loanTransfersCounter');
 
 const topButtons = [toTopLeaguesButton, fromTopLeaguesButton, insideTopLeaguesButton];
 const regionButtons = [
@@ -190,9 +195,30 @@ const getFilteredData = () => {
   // by type
   filteredData = data.filter(t => t[typeField] === topFilter);
 
-  // by loan
+  if (topFilter === inType) {
+    normalTransfersCounterButton.textContent = `${Math.round(
+      100 / (counters.toTopCounter.counter / counters.toTopCounter.loan.normal)
+      )}%`;
+    loanTransfersCounterButton.textContent = `${Math.round(
+      100 / (counters.toTopCounter.counter / counters.toTopCounter.loan.loan)
+      )}%`;
+  } else if (topFilter === outType) {
+    normalTransfersCounterButton.textContent = `${Math.round(
+      100 / (counters.fromTopCounter.counter / counters.fromTopCounter.loan.normal)
+      )}%`;
+    loanTransfersCounterButton.textContent = `${Math.round(
+      100 / (counters.fromTopCounter.counter / counters.fromTopCounter.loan.loan)
+      )}%`;
+  } else if (topFilter === insideType) {
+    normalTransfersCounterButton.textContent = `${Math.round(
+      100 / (counters.insideTopCounter.counter / counters.insideTopCounter.loan.normal)
+      )}%`;
+    loanTransfersCounterButton.textContent = `${Math.round(
+      100 / (counters.insideTopCounter.counter / counters.insideTopCounter.loan.loan)
+      )}%`;
+  }
 
-  
+  // by loan
   if (loanFilter === loanTypeNo) {
     filteredData = filteredData.filter(t => t[loanField] === loanFilter);
   } else {
@@ -281,7 +307,13 @@ const getCsv = async () => {
 
   {
     let toTopData = data.filter(t => t[typeField] === inType);
+
     toTopCounter.textContent = toTopData.length;
+    counters.toTopCounter = {counter: toTopData.length};
+    counters.toTopCounter.loan = {normal: 0, loan: 0};
+    counters.toTopCounter.loan.normal = toTopData.filter(t => t[loanField] === loanTypeNo).length;
+    counters.toTopCounter.loan.loan = toTopData.filter(t => t[loanField] !== loanTypeNo).length;
+
     toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
     const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
     const v = getMaxValue(filtered)
@@ -296,7 +328,13 @@ const getCsv = async () => {
   }
   {
     let toTopData = data.filter(t => t[typeField] === outType);
+
     fromTopCounter.textContent = toTopData.length;
+    counters.fromTopCounter = {counter: toTopData.length};
+    counters.fromTopCounter.loan = {normal: 0, loan: 0};
+    counters.fromTopCounter.loan.normal = toTopData.filter(t => t[loanField] === loanTypeNo).length;
+    counters.fromTopCounter.loan.loan = toTopData.filter(t => t[loanField] !== loanTypeNo).length;
+
     toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
     const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
     const v = getMaxValue(filtered)
@@ -311,7 +349,13 @@ const getCsv = async () => {
   }
   {
     let toTopData = data.filter(t => t[typeField] === insideType);
+
     insideTopCounter.textContent = toTopData.length;
+    counters.insideTopCounter = {counter: toTopData.length};
+    counters.insideTopCounter.loan = {normal: 0, loan: 0};
+    counters.insideTopCounter.loan.normal = toTopData.filter(t => t[loanField] === loanTypeNo).length;
+    counters.insideTopCounter.loan.loan = toTopData.filter(t => t[loanField] !== loanTypeNo).length;
+
     toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
     const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
     const v = getMaxValue(filtered)
@@ -325,6 +369,7 @@ const getCsv = async () => {
     maxFeeValue = Math.max(maxFeeValue, v);
   }
   // console.log(data);
+  console.log(counters);
 
   getFilteredData();
 }
