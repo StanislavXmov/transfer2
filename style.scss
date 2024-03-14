@@ -66,7 +66,7 @@ body {
   height: 28px;
   width: 100%;
   display: flex;
-  gap: 42px;
+  // gap: 42px;
 }
 .typeWrapper {
   display: flex;
@@ -202,8 +202,13 @@ svg g text {
 }
 
 .leaguesHeaders {
+  margin-top: 8px;
   display: grid;
   grid-template-columns: 1fr 1fr;
+
+  &:first-child {
+    margin-top: 0px;
+  }
 }
 
 .leaguesSubTitle {
@@ -225,4 +230,8 @@ svg g text {
   transform: translateY(50%);
   font-size: 12px;
   display: none;
+}
+
+.loanButtons {
+  margin-left: 16px;
 }
