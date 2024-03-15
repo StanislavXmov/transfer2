@@ -58,6 +58,13 @@ const loanTransfersButton = document.getElementById('loanTransfers');
 const normalTransfersCounterButton = document.getElementById('normalTransfersCounter');
 const loanTransfersCounterButton = document.getElementById('loanTransfersCounter');
 
+const europeCounter = document.getElementById('europeCounter');
+const southAmericaCounter = document.getElementById('southAmericaCounter');
+const northAmericaCounter = document.getElementById('northAmericaCounter');
+const asiaCounter = document.getElementById('asiaCounter');
+const africaCounter = document.getElementById('africaCounter');
+const noneCounter = document.getElementById('noneCounter');
+
 const topButtons = [toTopLeaguesButton, fromTopLeaguesButton, insideTopLeaguesButton];
 const regionButtons = [
   europeButton,
@@ -177,19 +184,27 @@ const changeRegionFilter = (target) => {
 }
 
 topButtons.forEach(b => {
-  b.addEventListener('click', (e) => changeTopType(e.target));
+  b.addEventListener('click', (e) => changeTopType(e.currentTarget));
 });
 
 regionButtons.forEach(b => {
-  b.addEventListener('click', (e) => changeRegionFilter(e.target));
+  b.addEventListener('click', (e) => changeRegionFilter(e.currentTarget));
 });
 
 loanButtons.forEach(b => {
-  b.addEventListener('click', (e) => changeLoanFilter(e.target));
+  b.addEventListener('click', (e) => changeLoanFilter(e.currentTarget));
 });
 
 let data = [];
 let filteredData = [];
+
+const percentage = (partialValue, totalValue) => {
+  const v = (100 * partialValue) / totalValue;
+  if (!v) {
+    return `0%`;
+  }
+  return `${(v).toFixed(1)}%`;
+} 
 
 const getFilteredData = () => {
   // by type
@@ -202,6 +217,60 @@ const getFilteredData = () => {
     loanTransfersCounterButton.textContent = `${Math.round(
       100 / (counters.toTopCounter.counter / counters.toTopCounter.loan.loan)
       )}%`;
+    // if (loanFilter === loanTypeNo) {
+    //   europeCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.europe)
+    //     )}%`;
+    //   southAmericaCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.southAmerica)
+    //     )}%`;
+    //   northAmericaCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.northAmerica)
+    //     )}%`;
+    //   asiaCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.asia)
+    //     )}%`;
+    //   africaCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.africa)
+    //     )}%`;
+    //   noneCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.none)
+    //     )}%`;
+    // } else {
+    //   europeCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.europe)
+    //     )}%`;
+    //   southAmericaCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.southAmerica)
+    //     )}%`;
+    //   northAmericaCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.northAmerica)
+    //     )}%`;
+    //   asiaCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.asia)
+    //     )}%`;
+    //   africaCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.africa)
+    //     )}%`;
+    //   noneCounter.textContent = `${Math.round(
+    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.none)
+    //     )}%`;
+    // }
+    if (loanFilter === loanTypeNo) {
+      europeCounter.textContent = percentage(counters.toTopCounter.loanNormal.europe, counters.toTopCounter.loan.normal);
+      southAmericaCounter.textContent = percentage(counters.toTopCounter.loanNormal.southAmerica, counters.toTopCounter.loan.normal);
+      northAmericaCounter.textContent = percentage(counters.toTopCounter.loanNormal.northAmerica, counters.toTopCounter.loan.normal);
+      asiaCounter.textContent = percentage(counters.toTopCounter.loanNormal.asia, counters.toTopCounter.loan.normal);
+      africaCounter.textContent = percentage(counters.toTopCounter.loanNormal.africa, counters.toTopCounter.loan.normal);
+      noneCounter.textContent = percentage(counters.toTopCounter.loanNormal.none, counters.toTopCounter.loan.normal);
+    } else {
+      europeCounter.textContent = percentage(counters.toTopCounter.loanTransfers.europe, counters.toTopCounter.loan.loan);
+      southAmericaCounter.textContent = percentage(counters.toTopCounter.loanTransfers.southAmerica, counters.toTopCounter.loan.loan);
+      northAmericaCounter.textContent = percentage(counters.toTopCounter.loanTransfers.northAmerica, counters.toTopCounter.loan.loan);
+      asiaCounter.textContent = percentage(counters.toTopCounter.loanTransfers.asia, counters.toTopCounter.loan.loan);
+      africaCounter.textContent = percentage(counters.toTopCounter.loanTransfers.africa, counters.toTopCounter.loan.loan);
+      noneCounter.textContent = percentage(counters.toTopCounter.loanTransfers.none, counters.toTopCounter.loan.loan);
+    }
   } else if (topFilter === outType) {
     normalTransfersCounterButton.textContent = `${Math.round(
       100 / (counters.fromTopCounter.counter / counters.fromTopCounter.loan.normal)
@@ -209,6 +278,21 @@ const getFilteredData = () => {
     loanTransfersCounterButton.textContent = `${Math.round(
       100 / (counters.fromTopCounter.counter / counters.fromTopCounter.loan.loan)
       )}%`;
+    if (loanFilter === loanTypeNo) {
+      europeCounter.textContent = percentage(counters.fromTopCounter.loanNormal.europe, counters.fromTopCounter.loan.normal);
+      southAmericaCounter.textContent = percentage(counters.fromTopCounter.loanNormal.southAmerica, counters.fromTopCounter.loan.normal);
+      northAmericaCounter.textContent = percentage(counters.fromTopCounter.loanNormal.northAmerica, counters.fromTopCounter.loan.normal);
+      asiaCounter.textContent = percentage(counters.fromTopCounter.loanNormal.asia, counters.fromTopCounter.loan.normal);
+      africaCounter.textContent = percentage(counters.fromTopCounter.loanNormal.africa, counters.fromTopCounter.loan.normal);
+      noneCounter.textContent = percentage(counters.fromTopCounter.loanNormal.none, counters.fromTopCounter.loan.normal);
+    } else {
+      europeCounter.textContent = percentage(counters.fromTopCounter.loanTransfers.europe, counters.fromTopCounter.loan.loan);
+      southAmericaCounter.textContent = percentage(counters.fromTopCounter.loanTransfers.southAmerica, counters.fromTopCounter.loan.loan);
+      northAmericaCounter.textContent = percentage(counters.fromTopCounter.loanTransfers.northAmerica, counters.fromTopCounter.loan.loan);
+      asiaCounter.textContent = percentage(counters.fromTopCounter.loanTransfers.asia, counters.fromTopCounter.loan.loan);
+      africaCounter.textContent = percentage(counters.fromTopCounter.loanTransfers.africa, counters.fromTopCounter.loan.loan);
+      noneCounter.textContent = percentage(counters.fromTopCounter.loanTransfers.none, counters.fromTopCounter.loan.loan);
+    }
   } else if (topFilter === insideType) {
     normalTransfersCounterButton.textContent = `${Math.round(
       100 / (counters.insideTopCounter.counter / counters.insideTopCounter.loan.normal)
@@ -314,6 +398,32 @@ const getCsv = async () => {
     counters.toTopCounter.loan.normal = toTopData.filter(t => t[loanField] === loanTypeNo).length;
     counters.toTopCounter.loan.loan = toTopData.filter(t => t[loanField] !== loanTypeNo).length;
 
+    counters.toTopCounter.loanNormal = {};
+    counters.toTopCounter.loanNormal.europe = toTopData.filter(t => t[fromRegionField] === regions.europe && t[loanField] === loanTypeNo).length;
+    counters.toTopCounter.loanNormal.southAmerica = toTopData.filter(t => t[fromRegionField] === regions.southAmerica && t[loanField] === loanTypeNo).length;
+    counters.toTopCounter.loanNormal.northAmerica = toTopData.filter(t => t[fromRegionField] === regions.northAmerica && t[loanField] === loanTypeNo).length;
+    counters.toTopCounter.loanNormal.asia = toTopData.filter(t => t[fromRegionField] === regions.asia && t[loanField] === loanTypeNo).length;
+    counters.toTopCounter.loanNormal.africa = toTopData.filter(t => t[fromRegionField] === regions.africa && t[loanField] === loanTypeNo).length;
+
+    {const none = toTopData.filter(t => 
+      t[fromRegionField].toLocaleLowerCase() === regions.none.toLocaleLowerCase()
+      || t[fromRegionField].toLocaleLowerCase() === 'retired'
+    );
+    counters.toTopCounter.loanNormal.none = none.filter(t => t[loanField] === loanTypeNo).length;}
+
+    counters.toTopCounter.loanTransfers = {};
+    counters.toTopCounter.loanTransfers.europe = toTopData.filter(t => t[fromRegionField] === regions.europe && t[loanField] !== loanTypeNo).length;
+    counters.toTopCounter.loanTransfers.southAmerica = toTopData.filter(t => t[fromRegionField] === regions.southAmerica && t[loanField] !== loanTypeNo).length;
+    counters.toTopCounter.loanTransfers.northAmerica = toTopData.filter(t => t[fromRegionField] === regions.northAmerica && t[loanField] !== loanTypeNo).length;
+    counters.toTopCounter.loanTransfers.asia = toTopData.filter(t => t[fromRegionField] === regions.asia && t[loanField] !== loanTypeNo).length;
+    counters.toTopCounter.loanTransfers.africa = toTopData.filter(t => t[fromRegionField] === regions.africa && t[loanField] !== loanTypeNo).length;
+
+    {const none = toTopData.filter(t => 
+      t[fromRegionField].toLocaleLowerCase() === regions.none.toLocaleLowerCase()
+      || t[fromRegionField].toLocaleLowerCase() === 'retired'
+    );
+    counters.toTopCounter.loanTransfers.none = none.filter(t => t[loanField] !== loanTypeNo).length;}
+
     toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
     const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
     const v = getMaxValue(filtered)
@@ -334,6 +444,32 @@ const getCsv = async () => {
     counters.fromTopCounter.loan = {normal: 0, loan: 0};
     counters.fromTopCounter.loan.normal = toTopData.filter(t => t[loanField] === loanTypeNo).length;
     counters.fromTopCounter.loan.loan = toTopData.filter(t => t[loanField] !== loanTypeNo).length;
+
+    counters.fromTopCounter.loanNormal = {};
+    counters.fromTopCounter.loanNormal.europe = toTopData.filter(t => t[toRegionField] === regions.europe && t[loanField] === loanTypeNo).length;
+    counters.fromTopCounter.loanNormal.southAmerica = toTopData.filter(t => t[toRegionField] === regions.southAmerica && t[loanField] === loanTypeNo).length;
+    counters.fromTopCounter.loanNormal.northAmerica = toTopData.filter(t => t[toRegionField] === regions.northAmerica && t[loanField] === loanTypeNo).length;
+    counters.fromTopCounter.loanNormal.asia = toTopData.filter(t => t[toRegionField] === regions.asia && t[loanField] === loanTypeNo).length;
+    counters.fromTopCounter.loanNormal.africa = toTopData.filter(t => t[toRegionField] === regions.africa && t[loanField] === loanTypeNo).length;
+
+    {const none = toTopData.filter(t => 
+      t[toRegionField].toLocaleLowerCase() === regions.none.toLocaleLowerCase()
+      || t[toRegionField].toLocaleLowerCase() === 'retired'
+    );
+    counters.fromTopCounter.loanNormal.none = none.filter(t => t[loanField] === loanTypeNo).length;}
+
+    counters.fromTopCounter.loanTransfers = {};
+    counters.fromTopCounter.loanTransfers.europe = toTopData.filter(t => t[toRegionField] === regions.europe && t[loanField] !== loanTypeNo).length;
+    counters.fromTopCounter.loanTransfers.southAmerica = toTopData.filter(t => t[toRegionField] === regions.southAmerica && t[loanField] !== loanTypeNo).length;
+    counters.fromTopCounter.loanTransfers.northAmerica = toTopData.filter(t => t[toRegionField] === regions.northAmerica && t[loanField] !== loanTypeNo).length;
+    counters.fromTopCounter.loanTransfers.asia = toTopData.filter(t => t[toRegionField] === regions.asia && t[loanField] !== loanTypeNo).length;
+    counters.fromTopCounter.loanTransfers.africa = toTopData.filter(t => t[toRegionField] === regions.africa && t[loanField] !== loanTypeNo).length;
+
+    {const none = toTopData.filter(t => 
+      t[toRegionField].toLocaleLowerCase() === regions.none.toLocaleLowerCase()
+      || t[toRegionField].toLocaleLowerCase() === 'retired'
+    );
+    counters.fromTopCounter.loanTransfers.none = none.filter(t => t[loanField] !== loanTypeNo).length;}
 
     toTopData = toTopData.filter(t => t[feeField] === '0' || t[feeField] === '?');
     const filtered = toTopData.filter(t => t[loanField] === loanTypeNo);
