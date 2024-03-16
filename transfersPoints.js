@@ -1,5 +1,28 @@
 import * as d3 from 'd3';
-import { feeField, fromCountryField, fromLeagueField, fromRegionField, fromTeamField, inType, insideType, marketValueField, outType, playerField, region, toCountryField, toLeagueField, toRegionField, toTeamField, transferIdField, typeField } from './fields';
+import {
+  ageField,
+  countries,
+  feeField,
+  fromCountryField,
+  fromLeagueField,
+  fromRegionField,
+  fromTeamField,
+  inType,
+  insideType,
+  loanField,
+  loanTypeNo,
+  marketValueField,
+  nationalityField,
+  outType,
+  playerField,
+  region,
+  toCountryField,
+  toLeagueField,
+  toRegionField,
+  toTeamField,
+  transferIdField,
+  typeField
+} from './fields';
 import { players } from './players';
 
 
@@ -28,6 +51,7 @@ const axisYTopBorder = document.getElementById('axisYTopBorder');
 const transferInfo = document.getElementById('transferInfo');
 const playerImage = document.getElementById('playerImage');
 const name = document.getElementById('name');
+const playerNationality = document.getElementById('playerNationality');
 const fromTeam = document.getElementById('fromTeam');
 const age = document.getElementById('age');
 const fromLeague = document.getElementById('fromLeague');
@@ -275,22 +299,23 @@ const circleOver = (e) => {
     const d = dataState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
       transferInfo.style.display = 'block';
-      transferInfo.style.width = `320px`;
+      transferInfo.style.width = `380px`;
       transferInfo.style.left = `${Number(e.target.dataset.left) + 10}px`;
       transferInfo.style.top = `${Number(e.target.dataset.top)}px`;
       transferInfo.style.bottom = `auto`;
       
       name.textContent = d[playerField];
       playerImage.src = players[d[playerField]].img;
-      age.textContent = d['Age'];
-      fromTeam.textContent = d[fromTeamField];
-      fromLeague.textContent = d[fromLeagueField];
+      age.textContent = d[ageField];
+      playerNationality.textContent = `${countries[d[nationalityField]]} ${d[nationalityField]}`;
+      marketValue.textContent = (getMarketValue(d[marketValueField])/ 1000000).toLocaleString();
       fromCountry.textContent = d[fromCountryField];
+      fromLeague.textContent = d[fromLeagueField];
+      fromTeam.textContent = d[fromTeamField];
       toTeam.textContent = d[toTeamField];
       toLeague.textContent = d[toLeagueField];
       toCountry.textContent = d[toCountryField];
-      marketValue.textContent = getMarketValue(d[marketValueField]).toLocaleString();
-      fee.textContent = Number(d[feeField]).toLocaleString();
+      fee.textContent = `Fee: €${(Number(d[feeField])/ 1000000).toLocaleString()}M${d[loanField] !== loanTypeNo ? ', loan ' + d[loanField].toLowerCase() : ''}`;
     }
   }
 }
@@ -301,22 +326,32 @@ const feeCircleOver = (e) => {
     const d = dataFeeState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
       transferInfo.style.display = 'block';
-      transferInfo.style.width = `320px`;
+      transferInfo.style.width = `380px`;
       transferInfo.style.left = `${Number(e.target.dataset.left) + 10}px`;
       transferInfo.style.bottom = `${780 - Number(e.target.dataset.top) - axisStepY * 5 - 6}px`
       transferInfo.style.top = `auto`;
 
       name.textContent = d[playerField];
       playerImage.src = players[d[playerField]].img;
-      age.textContent = d['Age'];
-      fromTeam.textContent = d[fromTeamField];
-      fromLeague.textContent = d[fromLeagueField];
+      age.textContent = d[ageField];
+      playerNationality.textContent = `${countries[d[nationalityField]]} ${d[nationalityField]}`;
+      marketValue.textContent = (getMarketValue(d[marketValueField])/ 1000000).toLocaleString();
       fromCountry.textContent = d[fromCountryField];
+      fromLeague.textContent = d[fromLeagueField];
+      fromTeam.textContent = d[fromTeamField];
       toTeam.textContent = d[toTeamField];
       toLeague.textContent = d[toLeagueField];
       toCountry.textContent = d[toCountryField];
-      marketValue.textContent = getMarketValue(d[marketValueField]).toLocaleString();
-      fee.textContent = Number(d[feeField]).toLocaleString();
+      if (d[feeField] === '?' || d[feeField] == 0) {
+        if (d[loanField] !== loanTypeNo) {
+          fee.textContent = `no fee, loan ${d[loanField].toLowerCase()}`;
+        } else {
+          fee.textContent = 'no fee';
+        }
+        
+      } else {
+        fee.textContent = `Fee: €${(Number(d[feeField])/ 1000000).toLocaleString()}M${d[loanField] !== loanTypeNo ? ', loan ' + d[loanField].toLowerCase() : ''}`;
+      }
     }
   }
 }
