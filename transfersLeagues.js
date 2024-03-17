@@ -10,6 +10,7 @@ import {
 } from "./fields";
 import { colors, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
 
+const transfersDataContainer = document.getElementById('transfersData');
 const fromLeaguesContainer = document.getElementById('fromLeagues');
 const toLeaguesContainer = document.getElementById('toLeagues');
 
@@ -69,12 +70,22 @@ export const setLeagues = (data) => {
     maxFrom = fromData[0][1].count;
   }
 
+  let scrollFrom = fromData.length > 14;
+
   const toData = Object.entries(toLeaguesObj).sort((a, b) => b[1].count - a[1].count);
   let maxTo = 0;
   if (toData.length === 0) {
     maxTo = 10;
   } else {
     maxTo = toData[0][1].count;
+  }
+
+  let scrollTo = toData.length > 14;
+
+  if (scrollFrom || scrollTo) {
+    transfersDataContainer.style.height = '760px';
+  } else {
+    transfersDataContainer.style.height = '780px';
   }
  
 
@@ -146,33 +157,69 @@ export const setLeagues = (data) => {
   const x = d3.scaleLinear()
     .domain([0, maxFrom])
     .range([0, width - 12 - flagDX * 2]);
-  svgFrom.append("g")
-    .attr("transform", `translate(${0}, ${fromHeight - 22})`)
-    .attr("class", `domainX`)
-    // .call(d3.axisBottom(x))
-    .call(d3.axisBottom(x).tickFormat((d, i) => {  
-      const n = Math.floor(d);
-      if (i === 0) {
-        return n;
-      } else {
-        if (n < 1) {
-          return '';
-        } else {
-          if (ticks.includes(n)) {
-            return '';
-          }
-          ticks.push(n);
+  if (!scrollFrom) {
+    d3.select("#fromLeaguesAddedAxisSvg").remove();
+    svgFrom.append("g")
+      .attr("transform", `translate(${0}, ${fromHeight - 22})`)
+      .attr("class", `domainX`)
+      // .call(d3.axisBottom(x))
+      .call(d3.axisBottom(x).tickFormat((d, i) => {  
+        const n = Math.floor(d);
+        if (i === 0) {
           return n;
+        } else {
+          if (n < 1) {
+            return '';
+          } else {
+            if (ticks.includes(n)) {
+              return '';
+            }
+            ticks.push(n);
+            return n;
+          }
         }
-      }
-    }))
-    .call(g => g.select(".domain").remove());
+      }))
+      .call(g => g.select(".domain").remove());
 
-  svgFrom.selectAll('.domainX')
-    .selectAll("line").remove();
+    svgFrom.selectAll('.domainX')
+      .selectAll("line").remove();
+  } else {
+    d3.select("#fromLeaguesAddedAxisSvg").remove();
+    const fromLeaguesAddedAxisSvg = d3.select("#transfersDataWrapper")
+      .append('svg')
+        .attr("id", 'fromLeaguesAddedAxisSvg')
+        .attr("width", width - 12)
+        .attr("height", 20)
+        .attr("transform", `translate(${0}, ${0})`);
+
+    fromLeaguesAddedAxisSvg.append("g")
+      .attr("transform", `translate(${22}, ${0})`)
+      .attr("class", `domainX`)
+      // .call(d3.axisBottom(x))
+      .call(d3.axisBottom(x).tickFormat((d, i) => {  
+        const n = Math.floor(d);
+        if (i === 0) {
+          return n;
+        } else {
+          if (n < 1) {
+            return '';
+          } else {
+            if (ticks.includes(n)) {
+              return '';
+            }
+            ticks.push(n);
+            return n;
+          }
+        }
+      }))
+      .call(g => g.select(".domain").remove());
+
+    fromLeaguesAddedAxisSvg.selectAll('.domainX')
+      .selectAll("line").remove();
+  }
 
   const y = d3.scaleBand()
-    .range([0, fromHeight - 22])
+    .range([0, scrollFrom ? fromHeight : fromHeight - 22])
     .domain(fromData.map(d => d[0]))
     .padding(.1);
   svgFrom.selectAll("rect")
@@ -244,7 +291,9 @@ export const setLeagues = (data) => {
   const x = d3.scaleLinear()
     .domain([0, maxTo])
     .range([0, width - 12 - flagDX * 2]);
-  svgTo.append("g")
+  if (!scrollTo) {
+    d3.select("#toLeaguesAddedAxisSvg").remove();
+    svgTo.append("g")
     .attr("transform", `translate(${0}, ${toHeight - 22})`)
     .attr("class", `domainX`)
     // .call(d3.axisBottom(x))
@@ -268,9 +317,41 @@ export const setLeagues = (data) => {
 
   svgTo.selectAll('.domainX')
     .selectAll("line").remove();
+  } else {
+    d3.select("#toLeaguesAddedAxisSvg").remove();
+    const toLeaguesAddedAxisSvg = d3.select("#transfersDataWrapper")
+      .append('svg')
+        .attr("id", 'toLeaguesAddedAxisSvg')
+        .attr("width", width - 12)
+        .attr("height", 20)
+        .attr("transform", `translate(${width}, ${0})`);
+    toLeaguesAddedAxisSvg.append("g")
+      .attr("transform", `translate(${22}, ${0})`)
+      .attr("class", `domainX`)
+      .call(d3.axisBottom(x).tickFormat((d, i) => {  
+        const n = Math.floor(d);
+        if (i === 0) {
+          return n;
+        } else {
+          if (n < 1) {
+            return '';
+          } else {
+            if (ticks.includes(n)) {
+              return '';
+            }
+            ticks.push(n);
+            return n;
+          }
+        }
+      }))
+      .call(g => g.select(".domain").remove());
+    
+    toLeaguesAddedAxisSvg.selectAll('.domainX')
+      .selectAll("line").remove();
+  }
 
   const y = d3.scaleBand()
-    .range([0, toHeight - 22])
+    .range([0, scrollTo ? toHeight : toHeight - 22])
     .domain(toData.map(d => d[0]))
     .padding(.1);
   svgTo.selectAll("rect")
