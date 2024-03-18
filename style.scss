@@ -12,7 +12,7 @@ body {
 
 .header {
   display: flex;
-  margin: 0 0 12px;
+  margin: 0 0 12px 30px;
 }
 
 .title {
@@ -63,8 +63,8 @@ body {
 }
 
 .subHeader {
+  margin: 0 0 0 30px;
   height: 28px;
-  width: 100%;
   display: flex;
   // gap: 42px;
 }
@@ -267,4 +267,15 @@ svg g text {
 
 .loanButtons {
   margin-left: 16px;
+}
+
+.footer {
+  margin: 26px 0 0 30px;
+  font-size: 12px;
+}
+
+.link {
+  color: black;
+  text-decoration: none;
+  border-bottom: 1px solid black;
 }
