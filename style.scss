@@ -188,8 +188,21 @@ svg g text {
   display: flex;
   flex-direction: column;
 }
+.playerImageWrapper {
+  flex-grow: 1;
+  flex-shrink: 0;
+  position: relative;
+  margin-top: -1px;
+  margin-left: -1px;
+  height: 128px;
+  width: 128px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #c1c1c1;
+}
 
 .playerImage {
+  // display: none;
   position: absolute;
   top: -1px;
   left: -1px;
@@ -197,12 +210,20 @@ svg g text {
   width: 128px;
   object-fit: contain;
   border-radius: 50%;
-  border: 1px solid #c1c1c1;
+  // border: 1px solid #c1c1c1;
+}
+
+.playerImageBg {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  height: 128px;
+  width: 128px;
 }
 
 .playerInfoWrapper {
-  margin-left: 146px;
-  padding: 12px 0px;
+  // margin-left: 146px;
+  padding: 12px 0px 12px 12px;
   font-size: 12px;
 }
 

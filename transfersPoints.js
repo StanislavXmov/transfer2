@@ -50,6 +50,7 @@ const axisYTopBorder = document.getElementById('axisYTopBorder');
 
 const transferInfo = document.getElementById('transferInfo');
 const playerImage = document.getElementById('playerImage');
+const playerImageBg = document.getElementById('playerImageBg');
 const name = document.getElementById('name');
 const playerNationality = document.getElementById('playerNationality');
 const fromTeam = document.getElementById('fromTeam');
@@ -298,7 +299,7 @@ const circleOver = (e) => {
     selected = e.target.dataset.index;
     const d = dataState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
-      transferInfo.style.display = 'block';
+      transferInfo.style.display = 'flex';
       transferInfo.style.width = `380px`;
       transferInfo.style.left = `${Number(e.target.dataset.left) + 10}px`;
       transferInfo.style.top = `${Number(e.target.dataset.top)}px`;
@@ -306,6 +307,14 @@ const circleOver = (e) => {
       
       name.textContent = d[playerField];
       playerImage.src = players[d[playerField]].img;
+      const ctx = playerImageBg.getContext("2d");
+      const baseImage = new Image();
+      baseImage.src = players[d[playerField]].img;
+      baseImage.onload = function(){
+        // playerImage.src = baseImage.src;
+        ctx.drawImage(baseImage, 0, 0, 1, baseImage.naturalHeight, 0, 0, 30, 128);
+        ctx.drawImage(baseImage, baseImage.naturalWidth - 1, 0, 1, baseImage.naturalHeight, 128 - 30, 0, 30, 128);
+      }
       age.textContent = d[ageField];
       playerNationality.textContent = `${countries[d[nationalityField]]} ${d[nationalityField]}`;
       marketValue.textContent = (getMarketValue(d[marketValueField])/ 1000000).toLocaleString();
@@ -325,7 +334,7 @@ const feeCircleOver = (e) => {
     selected = e.target.dataset.index;
     const d = dataFeeState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
-      transferInfo.style.display = 'block';
+      transferInfo.style.display = 'flex';
       transferInfo.style.width = `380px`;
       transferInfo.style.left = `${Number(e.target.dataset.left) + 10}px`;
       transferInfo.style.bottom = `${780 - Number(e.target.dataset.top) - axisStepY * 5 - 6}px`
@@ -333,6 +342,15 @@ const feeCircleOver = (e) => {
 
       name.textContent = d[playerField];
       playerImage.src = players[d[playerField]].img;
+      const ctx = playerImageBg.getContext("2d");
+      const baseImage = new Image();
+      baseImage.src = players[d[playerField]].img;
+      baseImage.onload = function(){
+        // playerImage.src = baseImage.src;
+        ctx.drawImage(baseImage, 0, 0, 1, baseImage.naturalHeight, 0, 0, 30, 128);
+        ctx.drawImage(baseImage, baseImage.naturalWidth - 1, 0, 1, baseImage.naturalHeight, 128 - 30, 0, 30, 128);
+      }
+
       age.textContent = d[ageField];
       playerNationality.textContent = `${countries[d[nationalityField]]} ${d[nationalityField]}`;
       marketValue.textContent = (getMarketValue(d[marketValueField])/ 1000000).toLocaleString();
@@ -360,6 +378,9 @@ const circleOut = (e) => {
   transferInfo.style.display = 'none';
   playerImage.src = "";
   selected = '-1';
+  const ctx = playerImageBg.getContext("2d");
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 128, 128);
 }
 
 const outD = 'M2 5L5 2M5 5L2 2';
