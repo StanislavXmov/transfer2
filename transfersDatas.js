@@ -25,6 +25,16 @@ const filteredByAge = (data, age) => {
   return filtered;
 }
 
+export const setAgeOpacity = (v) => {
+  d3.selectAll(`[data-age]`)
+  .style("opacity", v);
+}
+
+export const setAgeOpacityByTransfer = (t) => {
+  d3.selectAll(`[data-age="${t[ageField]}"]`)
+    .style("opacity", 1);
+}
+
 export const setDatas = (data, fullData) => {
   let ageDataElement = null;
   let ageDataSvg = null;
@@ -187,6 +197,7 @@ export const setDatas = (data, fullData) => {
       .selectAll()
         .data(ageFilteredDataList)
         .join("rect")
+          .attr("data-age", d => d[0])
           .attr("x", (d) => x(d[0]))
           .attr("y", (d) => y(d[1].count) + 26)
           .attr("height", (d) => {
@@ -210,6 +221,7 @@ export const setDatas = (data, fullData) => {
       .attr("class", `textX`)
       .attr("x", d => x(d[0]) + x.bandwidth() / 2)
       .attr("y", d => y(d[1].count) + 24)
+      .attr("data-age", d => d[0])
       .attr("text-anchor", 'middle');
 
     ageDataSvg.append("g")
@@ -223,6 +235,7 @@ export const setDatas = (data, fullData) => {
 
     ageDataSvg.selectAll('.domainX')
       .selectAll(".tick")
+      .attr("data-age", d => d)
       .style("cursor", 'pointer')
       .on('mouseover', (e, d) => {
         setPointsOpacity(0.1);

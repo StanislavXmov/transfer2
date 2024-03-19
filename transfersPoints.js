@@ -26,6 +26,7 @@ import {
 import { players } from './players';
 import { setLeaguesOpacity, setLeaguesOpacityByTransfer } from './transfersLeagues';
 import { setMapOpacity, setMapOpacityByTransfer } from './transfersTreemap';
+import { setAgeOpacity, setAgeOpacityByTransfer } from './transfersDatas';
 
 
 export const colors = {
@@ -304,8 +305,10 @@ const circleOver = (e) => {
 
       setLeaguesOpacity(0.1);
       setMapOpacity(0.1);
+      setAgeOpacity(0.1);
       setLeaguesOpacityByTransfer(d);
       setMapOpacityByTransfer(d);
+      setAgeOpacityByTransfer(d);
 
       transferInfo.style.display = 'flex';
       transferInfo.style.width = `380px`;
@@ -345,8 +348,10 @@ const feeCircleOver = (e) => {
 
       setLeaguesOpacity(0.1);
       setMapOpacity(0.1);
+      setAgeOpacity(0.1);
       setLeaguesOpacityByTransfer(d);
       setMapOpacityByTransfer(d);
+      setAgeOpacityByTransfer(d);
 
       transferInfo.style.display = 'flex';
       transferInfo.style.width = `380px`;
@@ -398,6 +403,7 @@ const circleOut = (e) => {
 
   setLeaguesOpacity(1);
   setMapOpacity(1);
+  setAgeOpacity(1);
 }
 
 const outD = 'M2 5L5 2M5 5L2 2';
