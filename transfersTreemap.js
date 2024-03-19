@@ -11,6 +11,16 @@ const filteredByNationality = (data, treeData) => {
   return filtered;
 }
 
+export const setMapOpacity = (v) => {
+  d3.selectAll(`[data-map-nat]`)
+  .style("opacity", v);
+}
+
+export const setMapOpacityByTransfer = (t) => {
+  d3.selectAll(`[data-map-nat="${t[nationalityField]}"]`)
+    .style("opacity", 1);
+}
+
 export const setTreeMap = (data) => {
 
   let svg = null;
@@ -85,6 +95,7 @@ export const setTreeMap = (data) => {
     
     leaf.append("rect")
       .attr("id", d => (d.leafUid = `leaf${d.data.id}`))
+      .attr("data-map-nat", d => d.data.name)
       .attr("fill", d => {
         return colors[d.data.region];
       })
@@ -110,6 +121,7 @@ export const setTreeMap = (data) => {
     leaf.append("text")
       .style("pointer-events", 'none')
       .attr("clip-path", d => `url(#${d.clipUid})`)
+      .attr("data-map-nat", d => d.data.name)
       .selectAll("tspan")
       .data(d => d.data.name.split(/(?=[A-Z][a-z])|\s+/g).concat(d.value))
       .join("tspan")
