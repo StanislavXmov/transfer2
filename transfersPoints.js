@@ -339,6 +339,10 @@ const feeCircleOver = (e) => {
     selected = e.target.dataset.index;
     const d = dataFeeState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
+
+      setLeaguesOpacity(0.1);
+      setLeaguesOpacityByTransfer(d);
+
       transferInfo.style.display = 'flex';
       transferInfo.style.width = `380px`;
       transferInfo.style.left = `${Number(e.target.dataset.left) + 10}px`;
