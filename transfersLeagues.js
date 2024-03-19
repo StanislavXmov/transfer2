@@ -221,6 +221,13 @@ export const setLeagues = (data) => {
   const y = d3.scaleBand()
     .range([0, scrollFrom ? fromHeight : fromHeight - 22])
     .domain(fromData.map(d => d[0]))
+    // .domain(fromData.map(d => {
+    //   if (d[0].length > 40) {
+    //     return `${d[0].substring(0, 40)}...`;
+    //   } else {
+    //     return d[0];
+    //   }
+    // }))
     .padding(.1);
   svgFrom.selectAll("rect")
     .data(fromData)
@@ -252,7 +259,14 @@ export const setLeagues = (data) => {
   svgFrom.selectAll('.domainY')
     .selectAll("text")
     .style("font-size", '12px')
-    .attr("text-anchor", 'start');
+    .attr("text-anchor", 'start')
+    .text(d => {
+        if (d.length > 40) {
+        return `${d.substring(0, 40)}...`;
+      } else {
+        return d;
+      }
+    });
   const nodes = svgFrom
     .selectAll("rect")
     .nodes();
@@ -384,7 +398,14 @@ export const setLeagues = (data) => {
   svgTo.selectAll('.domainY')
     .selectAll("text")
     .style("font-size", '12px')
-    .attr("text-anchor", 'start');
+    .attr("text-anchor", 'start')
+    .text(d => {
+        if (d.length > 40) {
+        return `${d.substring(0, 40)}...`;
+      } else {
+        return d;
+      }
+    });
    const nodes = svgTo
     .selectAll("rect")
     .nodes();
