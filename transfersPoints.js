@@ -31,7 +31,7 @@ import { setAgeOpacity, setAgeOpacityByTransfer } from './transfersDatas';
 
 export const colors = {
   // 'Top': '#FEFEFE',
-  'Top': '#c0ffff',
+  'Top': '#fececd',
   'Europe, ex. Top Leagues': '#1FB35F',
   'Europe': '#1FB35F',
   'Asia': '#F051AE',
@@ -329,12 +329,12 @@ const circleOver = (e) => {
       age.textContent = d[ageField];
       playerNationality.textContent = `${countries[d[nationalityField]]} ${d[nationalityField]}`;
       marketValue.textContent = (getMarketValue(d[marketValueField])/ 1000000).toLocaleString();
-      fromCountry.textContent = d[fromCountryField];
+      // fromCountry.textContent = d[fromCountryField];
       fromLeague.textContent = d[fromLeagueField];
       fromTeam.textContent = d[fromTeamField];
       toTeam.textContent = d[toTeamField];
       toLeague.textContent = d[toLeagueField];
-      toCountry.textContent = d[toCountryField];
+      // toCountry.textContent = d[toCountryField];
       fee.textContent = `Fee: €${(Number(d[feeField])/ 1000000).toLocaleString()}M${d[loanField] !== loanTypeNo ? ', loan ' + d[loanField].toLowerCase() : ''}`;
     }
   }
@@ -373,12 +373,12 @@ const feeCircleOver = (e) => {
       age.textContent = d[ageField];
       playerNationality.textContent = `${countries[d[nationalityField]]} ${d[nationalityField]}`;
       marketValue.textContent = (getMarketValue(d[marketValueField])/ 1000000).toLocaleString();
-      fromCountry.textContent = d[fromCountryField];
+      // fromCountry.textContent = d[fromCountryField];
       fromLeague.textContent = d[fromLeagueField];
       fromTeam.textContent = d[fromTeamField];
       toTeam.textContent = d[toTeamField];
       toLeague.textContent = d[toLeagueField];
-      toCountry.textContent = d[toCountryField];
+      // toCountry.textContent = d[toCountryField];
       if (d[feeField] === '?' || d[feeField] == 0) {
         if (d[loanField] !== loanTypeNo) {
           fee.textContent = `no fee, loan ${d[loanField].toLowerCase()}`;
@@ -489,7 +489,7 @@ const createPoints = (data) => {
           }
         })
         .attr("stroke", d => {
-          return "#00000060";
+          return "#00000030";
           // if (d[fromRegionField] === region && d[toRegionField] === region) {
           //   return "#00000060";
           // } else {
@@ -773,7 +773,7 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
           }
         })
         .attr("stroke", d => {
-          return "#00000060";
+          return "#00000030";
           // if (d[fromRegionField] === region && d[toRegionField] === region) {
           //   return "#00000060";
           // } else {
