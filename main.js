@@ -85,11 +85,11 @@ const changeTopType = (target) => {
   switch (topFilter) {
     case inType:
       regionsFilters.style.display = 'flex';
-      regionsSubTitle.textContent = 'From region';
+      regionsSubTitle.textContent = 'From Region';
       break;
     case outType:
       regionsFilters.style.display = 'flex';
-      regionsSubTitle.textContent = 'To region';
+      regionsSubTitle.textContent = 'To Region';
       break;
     case insideType:
       europe = true;
