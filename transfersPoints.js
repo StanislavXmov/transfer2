@@ -335,7 +335,7 @@ const circleOver = (e) => {
       toTeam.textContent = d[toTeamField];
       toLeague.textContent = d[toLeagueField];
       // toCountry.textContent = d[toCountryField];
-      fee.textContent = `Fee: €${(Number(d[feeField])/ 1000000).toLocaleString()}M${d[loanField] !== loanTypeNo ? ', loan ' + d[loanField].toLowerCase() : ''}`;
+      fee.textContent = `Fee: €${(Number(d[feeField])/ 1000000).toLocaleString()}M${d[loanField] !== loanTypeNo ? ', Loan ' + d[loanField] : ''}`;
     }
   }
 }
@@ -381,9 +381,9 @@ const feeCircleOver = (e) => {
       // toCountry.textContent = d[toCountryField];
       if (d[feeField] === '?' || d[feeField] == 0) {
         if (d[loanField] !== loanTypeNo) {
-          fee.textContent = `no fee, loan ${d[loanField].toLowerCase()}`;
+          fee.textContent = `No Fee, Loan ${d[loanField]}`;
         } else {
-          fee.textContent = 'no fee';
+          fee.textContent = 'No Fee';
         }
         
       } else {
