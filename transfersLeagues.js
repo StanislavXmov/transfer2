@@ -30,6 +30,37 @@ const filteredByFrom = (data, from) => {
   return filtered;
 }
 
+export const setLeaguesOpacity = (v) => {
+  d3.selectAll(`[data-rect-from-league]`)
+  .style("opacity", v);
+  d3.selectAll(`[data-text-from-league]`)
+  .style("opacity", v);
+  d3.selectAll(`[data-flag-from-league]`)
+  .style("opacity", v);
+  d3.selectAll(`[data-rect-to-league]`)
+  .style("opacity", v);
+  d3.selectAll(`[data-text-to-league]`)
+  .style("opacity", v);
+  d3.selectAll(`[data-flag-to-league]`)
+  .style("opacity", v);
+}
+
+export const setLeaguesOpacityByTransfer = (t) => {
+  //d3.selectAll(`[data-index="${d[transferIdField]}"]`)
+  d3.selectAll(`[data-rect-from-league="${t[fromLeagueField]}"]`)
+    .style("opacity", 1);
+  d3.selectAll(`[data-text-from-league="${t[fromLeagueField]}"]`)
+    .style("opacity", 1);
+  d3.selectAll(`[data-flag-from-league="${t[fromLeagueField]}"]`)
+    .style("opacity", 1);
+  d3.selectAll(`[data-rect-to-league="${t[toLeagueField]}"]`)
+    .style("opacity", 1);
+  d3.selectAll(`[data-text-to-league="${t[toLeagueField]}"]`)
+    .style("opacity", 1);
+  d3.selectAll(`[data-flag-to-league="${t[toLeagueField]}"]`)
+    .style("opacity", 1);
+}
+
 export const setLeagues = (data) => {
   let svgFromElement = null;
   let svgFrom = null;
@@ -233,6 +264,7 @@ export const setLeagues = (data) => {
     .data(fromData)
     .enter()
     .append("rect")
+    .attr("data-rect-from-league", d => d[0])
     .attr("x", x(0))
     .attr("y", d => y(d[0]))
     .attr("width", d => x(d[1].count))
@@ -260,6 +292,7 @@ export const setLeagues = (data) => {
     .selectAll("text")
     .style("font-size", '12px')
     .attr("text-anchor", 'start')
+    .attr("data-text-from-league", d => d)
     .text(d => {
         if (d.length > 40) {
         return `${d.substring(0, 40)}...`;
@@ -278,6 +311,7 @@ export const setLeagues = (data) => {
     const y = Number(n.getAttribute('y'));
     const span = document.createElement('span');
     span.dataset.flagFrom = true;
+    span.dataset.flagFromLeague = fromData[i][0];
     span.textContent = countries[fromData[i][1].country];
     span.addEventListener('mouseover', () => {
       setPointsOpacity(0.1);
@@ -372,6 +406,7 @@ export const setLeagues = (data) => {
     .data(toData)
     .enter()
     .append("rect")
+    .attr("data-rect-to-league", d => d[0])
     .attr("x", x(0) )
     .attr("y", d => y(d[0]))
     .attr("width", d => x(d[1].count))
@@ -399,6 +434,7 @@ export const setLeagues = (data) => {
     .selectAll("text")
     .style("font-size", '12px')
     .attr("text-anchor", 'start')
+    .attr("data-text-to-league", d => d)
     .text(d => {
         if (d.length > 40) {
         return `${d.substring(0, 40)}...`;
@@ -417,6 +453,7 @@ export const setLeagues = (data) => {
     const y = Number(n.getAttribute('y'));
     const span = document.createElement('span');
     span.dataset.flagTo = true;
+    span.dataset.flagToLeague = toData[i][0];
     span.textContent = countries[toData[i][1].country];
     span.addEventListener('mouseover', () => {
       setPointsOpacity(0.1);

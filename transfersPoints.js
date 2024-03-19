@@ -24,6 +24,7 @@ import {
   typeField
 } from './fields';
 import { players } from './players';
+import { setLeaguesOpacity, setLeaguesOpacityByTransfer } from './transfersLeagues';
 
 
 export const colors = {
@@ -299,6 +300,10 @@ const circleOver = (e) => {
     selected = e.target.dataset.index;
     const d = dataState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
+
+      setLeaguesOpacity(0.1);
+      setLeaguesOpacityByTransfer(d);
+
       transferInfo.style.display = 'flex';
       transferInfo.style.width = `380px`;
       transferInfo.style.left = `${Number(e.target.dataset.left) + 10}px`;
@@ -381,6 +386,8 @@ const circleOut = (e) => {
   const ctx = playerImageBg.getContext("2d");
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, 128, 128);
+
+  setLeaguesOpacity(1);
 }
 
 const outD = 'M2 5L5 2M5 5L2 2';
