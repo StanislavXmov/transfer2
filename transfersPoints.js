@@ -24,9 +24,17 @@ import {
   typeField
 } from './fields';
 import { players } from './players';
-import { setLeaguesOpacity, setLeaguesOpacityByTransfer } from './transfersLeagues';
+import {
+  returnLeguesFromState,
+  returnLeguesToState,
+  setLeaguesOpacity,
+  setLeaguesOpacityByFrom,
+  setLeaguesOpacityByTo,
+  setLeaguesOpacityByTransfer
+} from './transfersLeagues';
 import { setMapOpacity, setMapOpacityByTransfer } from './transfersTreemap';
 import { setAgeOpacity, setAgeOpacityByTransfer } from './transfersDatas';
+import { leaguesFilter } from './main';
 
 
 export const colors = {
@@ -303,12 +311,21 @@ const circleOver = (e) => {
     const d = dataState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
 
-      setLeaguesOpacity(0.1);
-      setMapOpacity(0.1);
-      setAgeOpacity(0.1);
-      setLeaguesOpacityByTransfer(d);
-      setMapOpacityByTransfer(d);
-      setAgeOpacityByTransfer(d);
+      if (e.target.dataset.isActive === 'true') {
+        setLeaguesOpacity(0.1);
+        setMapOpacity(0.1);
+        setAgeOpacity(0.1);
+        setLeaguesOpacityByTransfer(d);
+        setMapOpacityByTransfer(d);
+        setAgeOpacityByTransfer(d);
+      }
+
+      // setLeaguesOpacity(0.1);
+      // setMapOpacity(0.1);
+      // setAgeOpacity(0.1);
+      // setLeaguesOpacityByTransfer(d);
+      // setMapOpacityByTransfer(d);
+      // setAgeOpacityByTransfer(d);
 
       transferInfo.style.display = 'flex';
       transferInfo.style.width = `380px`;
@@ -346,12 +363,21 @@ const feeCircleOver = (e) => {
     const d = dataFeeState.find(t => t[transferIdField] === e.target.dataset.index);
     if (d) {
 
-      setLeaguesOpacity(0.1);
-      setMapOpacity(0.1);
-      setAgeOpacity(0.1);
-      setLeaguesOpacityByTransfer(d);
-      setMapOpacityByTransfer(d);
-      setAgeOpacityByTransfer(d);
+      if (e.target.dataset.isActive === 'true') {
+        setLeaguesOpacity(0.1);
+        setMapOpacity(0.1);
+        setAgeOpacity(0.1);
+        setLeaguesOpacityByTransfer(d);
+        setMapOpacityByTransfer(d);
+        setAgeOpacityByTransfer(d);
+      }
+
+      // setLeaguesOpacity(0.1);
+      // setMapOpacity(0.1);
+      // setAgeOpacity(0.1);
+      // setLeaguesOpacityByTransfer(d);
+      // setMapOpacityByTransfer(d);
+      // setAgeOpacityByTransfer(d);
 
       transferInfo.style.display = 'flex';
       transferInfo.style.width = `380px`;
@@ -401,9 +427,33 @@ const circleOut = (e) => {
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, 128, 128);
 
-  setLeaguesOpacity(1);
-  setMapOpacity(1);
-  setAgeOpacity(1);
+  if (e.target.dataset.isActive === 'true') {
+    // setLeaguesOpacity(1);
+    setMapOpacity(1);
+    setAgeOpacity(1);
+
+    if (leaguesFilter.from || leaguesFilter.to) {
+      setLeaguesOpacity(0.1);
+      if (leaguesFilter.from) {
+        setLeaguesOpacityByFrom(leaguesFilter.from, 1);
+        if (!leaguesFilter.to) {
+          returnLeguesToState();
+        }
+      }
+      if (leaguesFilter.to) {
+        setLeaguesOpacityByTo(leaguesFilter.to, 1);
+        if (!leaguesFilter.from) {
+          returnLeguesFromState();
+        }
+      }
+    } else {
+      setLeaguesOpacity(1);
+    }
+  }
+
+  // setLeaguesOpacity(1);
+  // setMapOpacity(1);
+  // setAgeOpacity(1);
 }
 
 const outD = 'M2 5L5 2M5 5L2 2';
@@ -497,6 +547,7 @@ const createPoints = (data) => {
           // }
         })
         .attr("data-index", (d, i) => d[transferIdField])
+        .attr("data-is-active", true)
         .attr("data-left", d => getX(d)(getMarketValue(d[marketValueField])) + paddingLeft - 3)
         .attr("data-top", d => {
           return getY(d)(d[feeField] === '?' ? 0 : d[feeField]) - axisStep / 4 - 3 - dy - 20;
@@ -781,6 +832,7 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
           // }
         })
       .attr("data-index", (d, i) => d[transferIdField])
+      .attr("data-is-active", true)
       .attr("data-left", d => getX(d)(getMarketValue(d[marketValueField])) + paddingLeft - 3)
       .attr("data-top", d => {
         setState(d, yStatePL);
@@ -845,12 +897,14 @@ export const setPointData = (data, topFilter, maxFeeValue) => {
 
 export const setPointsOpacity = (v) => {
   d3.selectAll(`[data-index]`)
+  .attr("data-is-active", v === 0.1 ? false : true)
   .style("opacity", v);
 }
 
 export const setPointsOpacityByFiltered = (filtered) => {
   filtered.forEach((d) => {
     d3.selectAll(`[data-index="${d[transferIdField]}"]`)
+    .attr("data-is-active", true)
     .style("opacity", 1)
   });
 }

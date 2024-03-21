@@ -104,12 +104,12 @@ export const setTreeMap = (data) => {
       .attr("height", d => d.y1 - d.y0)
       .style("cursor", 'pointer')
       .on('mouseover', (e, d) => {
-        setPointsOpacity(0.1);
-        const f = filteredByNationality(data, d.data);
-        setPointsOpacityByFiltered(f);
+        // setPointsOpacity(0.1);
+        // const f = filteredByNationality(data, d.data);
+        // setPointsOpacityByFiltered(f);
       })
       .on('mouseout', (e, d) => {
-        setPointsOpacity(1);
+        // setPointsOpacity(1);
       });
 
     leaf.append("clipPath")

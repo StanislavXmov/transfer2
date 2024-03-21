@@ -206,12 +206,12 @@ export const setDatas = (data, fullData) => {
           .attr("width", x.bandwidth())
           .style("cursor", 'pointer')
           .on('mouseover', (e, d) => {
-            setPointsOpacity(0.1);
-            const f = filteredByAge(data, d[0]);
-            setPointsOpacityByFiltered(f);
+            // setPointsOpacity(0.1);
+            // const f = filteredByAge(data, d[0]);
+            // setPointsOpacityByFiltered(f);
           })
           .on('mouseout', (e, d) => {
-            setPointsOpacity(1);
+            // setPointsOpacity(1);
           });
     ageDataSvg.append("g")
       .selectAll()
@@ -238,12 +238,12 @@ export const setDatas = (data, fullData) => {
       .attr("data-age", d => d)
       .style("cursor", 'pointer')
       .on('mouseover', (e, d) => {
-        setPointsOpacity(0.1);
-        const f = filteredByAge(data, d);
-        setPointsOpacityByFiltered(f);
+        // setPointsOpacity(0.1);
+        // const f = filteredByAge(data, d);
+        // setPointsOpacityByFiltered(f);
       })
       .on('mouseout', (e, d) => {
-        setPointsOpacity(1);
+        // setPointsOpacity(1);
       });
   }
   // {

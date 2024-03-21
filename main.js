@@ -23,6 +23,11 @@ import { setTreeMap } from './transfersTreemap';
 let topFilter = inType;
 let loanFilter = loanTypeNo;
 
+export const leaguesFilter = {
+  from: null,
+  to: null,
+}
+
 let europe = true; // 5
 let southAmerica = true; // 4
 let northAmerica = true; // 3
@@ -183,6 +188,24 @@ const changeRegionFilter = (target) => {
   // });
 }
 
+export const chacheLeaguesFilter = (from, to) => {
+  if (from) {
+    if (from === leaguesFilter.from) {
+      leaguesFilter.from = null;
+    } else {
+      leaguesFilter.from = from;
+    }
+  }
+  if (to) {
+    if (to === leaguesFilter.to) {
+      leaguesFilter.to = null;
+    } else {
+      leaguesFilter.to = to;
+    }
+  }
+  console.log(leaguesFilter);
+}
+
 topButtons.forEach(b => {
   b.addEventListener('click', (e) => changeTopType(e.currentTarget));
 });
@@ -217,45 +240,6 @@ const getFilteredData = () => {
     loanTransfersCounterButton.textContent = `${Math.round(
       100 / (counters.toTopCounter.counter / counters.toTopCounter.loan.loan)
       )}%`;
-    // if (loanFilter === loanTypeNo) {
-    //   europeCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.europe)
-    //     )}%`;
-    //   southAmericaCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.southAmerica)
-    //     )}%`;
-    //   northAmericaCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.northAmerica)
-    //     )}%`;
-    //   asiaCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.asia)
-    //     )}%`;
-    //   africaCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.africa)
-    //     )}%`;
-    //   noneCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.normal / counters.toTopCounter.loanNormal.none)
-    //     )}%`;
-    // } else {
-    //   europeCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.europe)
-    //     )}%`;
-    //   southAmericaCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.southAmerica)
-    //     )}%`;
-    //   northAmericaCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.northAmerica)
-    //     )}%`;
-    //   asiaCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.asia)
-    //     )}%`;
-    //   africaCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.africa)
-    //     )}%`;
-    //   noneCounter.textContent = `${Math.round(
-    //     100 / (counters.toTopCounter.loan.loan / counters.toTopCounter.loanTransfers.none)
-    //     )}%`;
-    // }
     if (loanFilter === loanTypeNo) {
       europeCounter.textContent = percentage(counters.toTopCounter.loanNormal.europe, counters.toTopCounter.loan.normal);
       southAmericaCounter.textContent = percentage(counters.toTopCounter.loanNormal.southAmerica, counters.toTopCounter.loan.normal);
