@@ -432,7 +432,9 @@ const circleOut = (e) => {
     setMapOpacity(1);
     setAgeOpacity(1);
 
-    if (leaguesFilter.from || leaguesFilter.to) {
+    if (leaguesFilter.from && leaguesFilter.to) {
+      
+    } else if (leaguesFilter.from || leaguesFilter.to) {
       setLeaguesOpacity(0.1);
       if (leaguesFilter.from) {
         setLeaguesOpacityByFrom(leaguesFilter.from, 1);

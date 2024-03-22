@@ -366,7 +366,8 @@ const getMaxValue = (data) => {
   return Math.max(...Object.values(obj).map(v => v.counter));
 }
 
-const getCsv = async () => {
+export const getCsv = async () => {
+  console.log('getCsv');
   data = await d3.csv('./football-transfers.csv');
   data.forEach(t => {
     t.fromOrder = getOrder(t[fromRegionField]);
@@ -494,4 +495,3 @@ const getCsv = async () => {
   getFilteredData();
 }
 
-getCsv();
