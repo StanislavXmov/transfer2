@@ -402,6 +402,72 @@ export const setLeagues = (data) => {
       setLeaguesOpacity(0.1);
       setLeaguesOpacityByLeagues(data);
 
+      if (leaguesFilter.to && leaguesFilter.from) {
+        let filtered = data.filter(t => t[fromLeagueField] === leaguesFilter.from);
+        filtered = filtered.filter(t => t[toLeagueField] === leaguesFilter.to);
+        const _toLeaguesObj = {};
+        filtered.forEach(t => {
+          if (_toLeaguesObj[t[toLeagueField]]) {
+            _toLeaguesObj[t[toLeagueField]].count += 1;
+          } else {
+            _toLeaguesObj[t[toLeagueField]] = {};
+            _toLeaguesObj[t[toLeagueField]].count = 1;
+            _toLeaguesObj[t[toLeagueField]].region = t[toRegionField];
+            _toLeaguesObj[t[toLeagueField]].country = t[toCountryField];
+            _toLeaguesObj[t[toLeagueField]].league = t[toLeagueField];
+          }
+        });
+        const _fromLeaguesObj = {};
+        filtered.forEach(t => {
+          if (_fromLeaguesObj[t[fromLeagueField]]) {
+            _fromLeaguesObj[t[fromLeagueField]].count += 1;
+          } else {
+            _fromLeaguesObj[t[fromLeagueField]] = {};
+            _fromLeaguesObj[t[fromLeagueField]].count = 1;
+            _fromLeaguesObj[t[fromLeagueField]].region = t[fromRegionField];
+            _fromLeaguesObj[t[fromLeagueField]].country = t[fromCountryField];
+            _fromLeaguesObj[t[fromLeagueField]].league = t[fromLeagueField];
+          }
+        });
+        const _fromData = Object.entries(_fromLeaguesObj)
+          .sort((a, b) => fromLeaguesObj[b[0]].count - fromLeaguesObj[a[0]].count);
+        const _toData = Object.entries(_toLeaguesObj)
+          .sort((a, b) => toLeaguesObj[b[0]].count - toLeaguesObj[a[0]].count);
+
+        d3.selectAll(`[data-rect-to-league="${leaguesFilter.to}"]`)
+          .style("opacity", 0.1);
+        d3.selectAll(`[data-rect-from-league="${leaguesFilter.from}"]`)
+          .style("opacity", 0.1);
+
+        svgFrom.select("#addedFrom").selectAll("rect").remove();
+        svgTo.select("#addedTo").selectAll("rect").remove();
+        svgTo.select("#addedTo")
+          .selectAll("rect")
+          .data(_toData)
+          .enter()
+          .append("rect")
+          .attr("data-rect-to-league-added", d => d[0])
+          .attr("x", TO.x(0) )
+          .attr("y", d => TO.y(d[0]))
+          .attr("width", d => TO.x(d[1].count))
+          .attr("height", TO.y.bandwidth() )
+          .attr("fill", d => colors[d[1].region])
+          .style("cursor", 'pointer');
+        svgFrom.select("#addedFrom")
+          .selectAll("rect")
+          .data(_fromData)
+          .enter()
+          .append("rect")
+          .attr("data-rect-from-league-added", d => d[0])
+          .attr("x", FROM.x(0) )
+          .attr("y", d => FROM.y(d[0]))
+          .attr("width", d => FROM.x(d[1].count))
+          .attr("height", FROM.y.bandwidth() )
+          .attr("fill", d => colors[d[1].region])
+          .style("cursor", 'pointer');
+        return;
+      }
+
       if (leaguesFilter.to || !leaguesFilter.from) {
         return;
       }
@@ -588,7 +654,11 @@ export const setLeagues = (data) => {
     .style("cursor", 'pointer')
     .on('mouseover', (e, d) => {
       setPointsOpacity(0.1);
-      if (leaguesFilter.from) {
+      if (leaguesFilter.from && leaguesFilter.to) {
+        let f = filteredByTo(data, d[0]);
+        f = filteredByFrom(f, leaguesFilter.from);
+        setPointsOpacityByFiltered(f);
+      } else if (leaguesFilter.from) {
         let f = filteredByTo(data, d[0]);
         f = filteredByFrom(f, leaguesFilter.from);
         setPointsOpacityByFiltered(f);
@@ -597,7 +667,9 @@ export const setLeagues = (data) => {
         setPointsOpacityByFiltered(f);
       }
       // hover 
-      if (leaguesFilter.to) {
+      if (leaguesFilter.to && leaguesFilter.from) {
+        console.log('CASE');
+      } else if (leaguesFilter.to) {
         setLeaguesOpacityByTo(d[0], 1);
       }
     })
@@ -619,6 +691,72 @@ export const setLeagues = (data) => {
       chacheLeaguesFilter(null, d[0]);
       setLeaguesOpacity(0.1);
       setLeaguesOpacityByLeagues(data);
+
+      if (leaguesFilter.to && leaguesFilter.from) {
+        let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
+        filtered = filtered.filter(t => t[fromLeagueField] === leaguesFilter.from);
+        const _toLeaguesObj = {};
+        filtered.forEach(t => {
+          if (_toLeaguesObj[t[toLeagueField]]) {
+            _toLeaguesObj[t[toLeagueField]].count += 1;
+          } else {
+            _toLeaguesObj[t[toLeagueField]] = {};
+            _toLeaguesObj[t[toLeagueField]].count = 1;
+            _toLeaguesObj[t[toLeagueField]].region = t[toRegionField];
+            _toLeaguesObj[t[toLeagueField]].country = t[toCountryField];
+            _toLeaguesObj[t[toLeagueField]].league = t[toLeagueField];
+          }
+        });
+        const _fromLeaguesObj = {};
+        filtered.forEach(t => {
+          if (_fromLeaguesObj[t[fromLeagueField]]) {
+            _fromLeaguesObj[t[fromLeagueField]].count += 1;
+          } else {
+            _fromLeaguesObj[t[fromLeagueField]] = {};
+            _fromLeaguesObj[t[fromLeagueField]].count = 1;
+            _fromLeaguesObj[t[fromLeagueField]].region = t[fromRegionField];
+            _fromLeaguesObj[t[fromLeagueField]].country = t[fromCountryField];
+            _fromLeaguesObj[t[fromLeagueField]].league = t[fromLeagueField];
+          }
+        });
+        const _toData = Object.entries(_toLeaguesObj)
+          .sort((a, b) => toLeaguesObj[b[0]].count - toLeaguesObj[a[0]].count);
+        const _fromData = Object.entries(_fromLeaguesObj)
+          .sort((a, b) => fromLeaguesObj[b[0]].count - fromLeaguesObj[a[0]].count);
+
+        d3.selectAll(`[data-rect-from-league="${leaguesFilter.from}"]`)
+          .style("opacity", 0.1);
+        d3.selectAll(`[data-rect-to-league="${leaguesFilter.to}"]`)
+          .style("opacity", 0.1);
+
+        svgTo.select("#addedTo").selectAll("rect").remove();
+        svgFrom.select("#addedFrom").selectAll("rect").remove();
+        svgFrom.select("#addedFrom")
+          .selectAll("rect")
+          .data(_fromData)
+          .enter()
+          .append("rect")
+          .attr("data-rect-from-league-added", d => d[0])
+          .attr("x", FROM.x(0) )
+          .attr("y", d => FROM.y(d[0]))
+          .attr("width", d => FROM.x(d[1].count))
+          .attr("height", FROM.y.bandwidth() )
+          .attr("fill", d => colors[d[1].region])
+          .style("cursor", 'pointer');
+        svgTo.select("#addedTo")
+          .selectAll("rect")
+          .data(_toData)
+          .enter()
+          .append("rect")
+          .attr("data-rect-to-league-added", d => d[0])
+          .attr("x", TO.x(0) )
+          .attr("y", d => TO.y(d[0]))
+          .attr("width", d => TO.x(d[1].count))
+          .attr("height", TO.y.bandwidth() )
+          .attr("fill", d => colors[d[1].region])
+          .style("cursor", 'pointer');
+        return;
+      }
 
       if (leaguesFilter.from || !leaguesFilter.to) {
         return;
