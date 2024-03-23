@@ -9,7 +9,8 @@ import {
   toRegionField
 } from "./fields";
 import { colors, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
-import { chacheLeaguesFilter, leaguesFilter } from './main';
+import { chacheLeaguesFilter, leaguesFilter, data as fullData } from './main';
+import { setDatas } from './transfersDatas';
 
 const transfersDataContainer = document.getElementById('transfersData');
 const fromLeaguesContainer = document.getElementById('fromLeagues');
@@ -404,6 +405,22 @@ export const setLeagues = (data) => {
       setLeaguesOpacityByLeagues(data);
 
       if (leaguesFilter.to && leaguesFilter.from) {
+        let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
+        filtered = filtered.filter(t => t[fromLeagueField] === leaguesFilter.from);
+        setDatas(filtered, fullData);
+      } else if (leaguesFilter.from) {
+        let filtered = data.filter(t => t[fromLeagueField] === leaguesFilter.from);
+        setDatas(filtered, fullData);
+      } else if (!leaguesFilter.from) {
+        if (leaguesFilter.to) {
+          let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
+          setDatas(filtered, fullData);
+        } else {
+          setDatas(data, fullData);
+        }
+      }
+
+      if (leaguesFilter.to && leaguesFilter.from) {
         let filtered = data.filter(t => t[fromLeagueField] === leaguesFilter.from);
         filtered = filtered.filter(t => t[toLeagueField] === leaguesFilter.to);
         const _toLeaguesObj = {};
@@ -732,6 +749,22 @@ export const setLeagues = (data) => {
       chacheLeaguesFilter(null, d[0]);
       setLeaguesOpacity(0.1);
       setLeaguesOpacityByLeagues(data);
+
+      if (leaguesFilter.to && leaguesFilter.from) {
+        let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
+        filtered = filtered.filter(t => t[fromLeagueField] === leaguesFilter.from);
+        setDatas(filtered, fullData);
+      } else if (leaguesFilter.to) {
+        let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
+        setDatas(filtered, fullData);
+      } else if (!leaguesFilter.to) {
+        if (leaguesFilter.from) {
+          let filtered = data.filter(t => t[fromLeagueField] === leaguesFilter.from);
+          setDatas(filtered, fullData);
+        } else {
+          setDatas(data, fullData);
+        }
+      }
 
       if (leaguesFilter.to && leaguesFilter.from) {
         let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);

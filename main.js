@@ -82,6 +82,8 @@ const regionButtons = [
 const loanButtons = [normalTransfersButton, loanTransfersButton];
 
 const changeTopType = (target) => {
+  leaguesFilter.from = null;
+  leaguesFilter.to = null;
   topFilter = target.dataset.type;
   console.log(topFilter);
   topButtons.forEach(b => b.classList.remove('active'));
@@ -115,6 +117,8 @@ const changeTopType = (target) => {
 }
 
 const changeLoanFilter = (target) => {
+  leaguesFilter.from = null;
+  leaguesFilter.to = null;
   loanFilter = target.dataset.type;
   loanButtons.forEach(b => b.classList.remove('active'));
   target.classList.add('active');
@@ -167,6 +171,8 @@ const changeFilter = (type) => {
 const changeRegionFilter = (target) => {
   console.log(target.dataset.type);
   const type = target.dataset.type;
+  leaguesFilter.from = null;
+  leaguesFilter.to = null;
   if (checkAllFilter()) {
     regionButtons.forEach(b => b.classList.remove('active'));
     resetAllRegionsFilter();
@@ -218,7 +224,7 @@ loanButtons.forEach(b => {
   b.addEventListener('click', (e) => changeLoanFilter(e.currentTarget));
 });
 
-let data = [];
+export let data = [];
 let filteredData = [];
 
 const percentage = (partialValue, totalValue) => {
@@ -367,7 +373,6 @@ const getMaxValue = (data) => {
 }
 
 export const getCsv = async () => {
-  console.log('getCsv');
   data = await d3.csv('./football-transfers.csv');
   data.forEach(t => {
     t.fromOrder = getOrder(t[fromRegionField]);

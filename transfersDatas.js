@@ -36,6 +36,7 @@ export const setAgeOpacityByTransfer = (t) => {
 }
 
 export const setDatas = (data, fullData) => {
+  // console.log(data, fullData);
   let ageDataElement = null;
   let ageDataSvg = null;
   let nationalityDataElement = null;
@@ -206,12 +207,12 @@ export const setDatas = (data, fullData) => {
           .attr("width", x.bandwidth())
           .style("cursor", 'pointer')
           .on('mouseover', (e, d) => {
-            // setPointsOpacity(0.1);
-            // const f = filteredByAge(data, d[0]);
-            // setPointsOpacityByFiltered(f);
+            setPointsOpacity(0.1);
+            const f = filteredByAge(data, d[0]);
+            setPointsOpacityByFiltered(f);
           })
           .on('mouseout', (e, d) => {
-            // setPointsOpacity(1);
+            setPointsOpacity(1);
           });
     ageDataSvg.append("g")
       .selectAll()
