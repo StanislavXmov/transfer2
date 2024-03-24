@@ -10,6 +10,7 @@ import {
   toRegionField
 } from "./fields";
 import { colors, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
+import { leaguesFilter } from './main';
 
 const ageDataContainer = document.getElementById('ageData');
 // const nationalityDataContainer = document.getElementById('nationalityData');
@@ -212,7 +213,13 @@ export const setDatas = (data, fullData) => {
             setPointsOpacityByFiltered(f);
           })
           .on('mouseout', (e, d) => {
-            setPointsOpacity(1);
+            // setPointsOpacity(1);
+            if (!leaguesFilter.from && !leaguesFilter.to) {
+              setPointsOpacity(1);
+            } else {
+              setPointsOpacity(0.1);
+              setPointsOpacityByFiltered(data);
+            }
           });
     ageDataSvg.append("g")
       .selectAll()
