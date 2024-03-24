@@ -11,6 +11,7 @@ import {
 import { colors, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
 import { chacheLeaguesFilter, leaguesFilter, data as fullData } from './main';
 import { setDatas } from './transfersDatas';
+import { setTreeMap } from './transfersTreemap';
 
 const transfersDataContainer = document.getElementById('transfersData');
 const fromLeaguesContainer = document.getElementById('fromLeagues');
@@ -408,15 +409,19 @@ export const setLeagues = (data) => {
         let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
         filtered = filtered.filter(t => t[fromLeagueField] === leaguesFilter.from);
         setDatas(filtered, fullData);
+        setTreeMap(filtered);
       } else if (leaguesFilter.from) {
         let filtered = data.filter(t => t[fromLeagueField] === leaguesFilter.from);
         setDatas(filtered, fullData);
+        setTreeMap(filtered);
       } else if (!leaguesFilter.from) {
         if (leaguesFilter.to) {
           let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
           setDatas(filtered, fullData);
+          setTreeMap(filtered);
         } else {
           setDatas(data, fullData);
+          setTreeMap(data);
         }
       }
 
@@ -754,15 +759,19 @@ export const setLeagues = (data) => {
         let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
         filtered = filtered.filter(t => t[fromLeagueField] === leaguesFilter.from);
         setDatas(filtered, fullData);
+        setTreeMap(filtered);
       } else if (leaguesFilter.to) {
         let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
         setDatas(filtered, fullData);
+        setTreeMap(filtered);
       } else if (!leaguesFilter.to) {
         if (leaguesFilter.from) {
           let filtered = data.filter(t => t[fromLeagueField] === leaguesFilter.from);
           setDatas(filtered, fullData);
+          setTreeMap(filtered);
         } else {
           setDatas(data, fullData);
+          setTreeMap(data);
         }
       }
 

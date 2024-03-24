@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import { nationalityField, regionNatField } from './fields';
 import { colors, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
+import { leaguesFilter } from './main';
 
 const treeMapNationalityContainer = document.getElementById('treeMapNationality');
 const width = treeMapNationalityContainer.clientWidth;
@@ -104,12 +105,17 @@ export const setTreeMap = (data) => {
       .attr("height", d => d.y1 - d.y0)
       .style("cursor", 'pointer')
       .on('mouseover', (e, d) => {
-        // setPointsOpacity(0.1);
-        // const f = filteredByNationality(data, d.data);
-        // setPointsOpacityByFiltered(f);
+        setPointsOpacity(0.1);
+        const f = filteredByNationality(data, d.data);
+        setPointsOpacityByFiltered(f);
       })
       .on('mouseout', (e, d) => {
-        // setPointsOpacity(1);
+        if (!leaguesFilter.from && !leaguesFilter.to) {
+          setPointsOpacity(1);
+        } else {
+          setPointsOpacity(0.1);
+          setPointsOpacityByFiltered(data);
+        }
       });
 
     leaf.append("clipPath")
