@@ -8,7 +8,7 @@ import {
   toLeagueField,
   toRegionField
 } from "./fields";
-import { colors, setAxisYPercent, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
+import { colors, setAverage, setAxisYPercent, setPointsOpacity, setPointsOpacityByFiltered } from './transfersPoints';
 import { chacheLeaguesFilter, leaguesFilter, data as fullData } from './main';
 import { setDatas } from './transfersDatas';
 import { setTreeMap } from './transfersTreemap';
@@ -406,6 +406,7 @@ export const setLeagues = (data) => {
       setLeaguesOpacityByLeagues(data);
 
       setAxisYPercent(data);
+      setAverage(data);
 
       if (leaguesFilter.to && leaguesFilter.from) {
         let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
@@ -758,6 +759,7 @@ export const setLeagues = (data) => {
       setLeaguesOpacityByLeagues(data);
 
       setAxisYPercent(data);
+      setAverage(data);
 
       if (leaguesFilter.to && leaguesFilter.from) {
         let filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);

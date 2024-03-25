@@ -461,6 +461,126 @@ const circleOut = (e) => {
 const outD = 'M2 5L5 2M5 5L2 2';
 const inD = 'M5 3.5H1.5M5 3.5L3.5 2M5 3.5L3.5 5';
 
+const setAverageLines = (data) => {
+  let filtered = [];
+  const allDataState = data;
+
+  let dataFeeState = data.filter(t => t[feeField] === '0' || t[feeField] === '?');
+
+  filtered = data.filter(t => t[feeField] !== '0' && t[feeField] !== '?');
+  if (leaguesFilter.from && leaguesFilter.to) {
+    filtered = filtered.filter(t => t[toLeagueField] === leaguesFilter.to);
+    filtered = filtered.filter(t => t[fromLeagueField] === leaguesFilter.from);
+    dataFeeState = dataFeeState.filter(t => t[toLeagueField] === leaguesFilter.to);
+    dataFeeState = dataFeeState.filter(t => t[fromLeagueField] === leaguesFilter.from);
+  } else if (leaguesFilter.from) {
+    filtered = filtered.filter(t => t[fromLeagueField] === leaguesFilter.from);
+    dataFeeState = dataFeeState.filter(t => t[fromLeagueField] === leaguesFilter.from);
+  } else if (leaguesFilter.to) {
+    filtered = filtered.filter(t => t[toLeagueField] === leaguesFilter.to);
+    dataFeeState = dataFeeState.filter(t => t[toLeagueField] === leaguesFilter.to);
+  }
+
+  const maxFeePaid = filtered.reduce((acc, t) => acc + Number(t[feeField]), 0);
+  const averageFee = maxFeePaid / filtered.length || 0;
+  const averageFeeTitle = (averageFee / 1000000).toFixed(2)
+  const averageFeeT = {
+    [feeField]: averageFee
+  };
+  const averageFeeY = getY(averageFeeT)(averageFee) - axisStep / 4 - 3 - dy - 20;
+  const averageFeeX = axis.x['100000000'](400000000);
+  if (averageFee) {
+    averageFeeTitleWrapper.style.display = 'block';
+  } else {
+    averageFeeTitleWrapper.style.display = 'none';
+  }
+  averageFeeTitleWrapper.style.top = `${averageFeeY - 14}px`;
+  averageFeeTitleWrapper.style.left = `${averageFeeX - 110}px`;
+  averageFeeTitleData.textContent = `${averageFeeTitle}M`;
+
+  averageFee && svg.append('line')
+    .attr("id", "averageFee")
+    .attr('x1', paddingLeft - 3)
+    .attr('y1', averageFeeY)
+    .attr('x2', averageFeeX)
+    .attr('y2', averageFeeY)
+    .attr("stroke", "#00000020");
+
+  const maxMarketPaid = filtered.reduce((acc, t) => acc + getMarketValue(t[marketValueField]), 0);
+  const averageMarket = maxMarketPaid / filtered.length || 0;
+  const averageMarketTitle = (averageMarket / 1000000).toFixed(2)
+  const averageMarketT = {
+    [marketValueField]: averageMarket.toString()
+  };
+  const averageMarketX = getX(averageMarketT)(averageMarket) + paddingLeft - 3;
+  const averageFeeY2 = svgHeight - 36;
+  if (averageMarket) {
+    averageMarketTitleWrapper.style.display = 'block';
+  } else {
+    averageMarketTitleWrapper.style.display = 'none';
+  }
+  
+  averageMarketTitleWrapper.style.top = `${averageFeeY2 - 14}px`;
+  averageMarketTitleWrapper.style.left = `${averageMarketX + 4}px`;
+  averageMarketTitleData.textContent = `${averageMarketTitle}M`;
+
+  averageMarket && svg.append('line')
+    .attr("id", "averageMarket")
+    .attr('x1', averageMarketX)
+    .attr('y1', 20)
+    .attr('x2', averageMarketX)
+    .attr('y2', averageFeeY2)
+    .attr("stroke", "#00000020");
+
+  //
+  {
+    const maxMarketPaid = dataFeeState.reduce((acc, t) => acc + getMarketValue(t[marketValueField]), 0);
+    const averageMarket = maxMarketPaid / dataFeeState.length || 0;
+    const averageMarketTitle = (averageMarket / 1000000).toFixed(2)
+    const averageMarketT = {
+      [marketValueField]: averageMarket.toString()
+    };
+
+    const averageMarketX = getX(averageMarketT)(averageMarket) + paddingLeft - 3;
+    const averageFeeY2 = height - 22 + 2;
+
+    const averageFreeMarketTitleWrapper = document.getElementById('averageFreeMarketTitle');
+    const averageFreeMarketTitleData = document.getElementById('averageFreeMarketTitleData');
+    if (averageMarket) {
+      averageFreeMarketTitleWrapper.style.display = 'block';
+    } else {
+      averageFreeMarketTitleWrapper.style.display = 'none';
+    }
+    
+    averageFreeMarketTitleWrapper.style.top=`${- 8}px`;
+    averageFreeMarketTitleWrapper.style.left=`${averageMarketX + 4}px`;
+    averageFreeMarketTitleData.textContent = `${averageMarketTitle}M`;
+
+    const svg = d3.select('#feePoints');
+  
+    averageMarket && svg.append('line')
+      .attr("id", "averageFreeMarket")
+      .attr('x1', averageMarketX)
+      .attr('y1', 0)
+      .attr('x2', averageMarketX)
+      .attr('y2', averageFeeY2)
+      .attr("stroke", "#00000020");
+  }
+  
+}
+
+export const setAverage = (data) => {
+  const averageFeeLine = document.querySelector('#averageFee');
+  const averageMarketLine = document.querySelector('#averageMarket');
+  const averageFreeMarketLine = document.querySelector('#averageFreeMarket');
+  
+  averageFeeLine && averageFeeLine.remove();
+  averageMarketLine && averageMarketLine.remove();
+  averageFreeMarketLine && averageFreeMarketLine.remove();
+
+  setAverageLines(data);
+}
+
 const createPoints = (data) => {
 
   const maxFeePaid = data.reduce((acc, t) => acc + Number(t[feeField]), 0);
