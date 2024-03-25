@@ -874,6 +874,50 @@ const clearGraph = () => {
   averageFreeMarketLine && averageFreeMarketLine.remove();
 }
 
+const setAxisYTopPercent = () => {
+  axisYTopPercent.textContent = `${Math.round(
+    100 / (counters.all / counters.normal)
+    )}%`;
+}
+const setAxisYFeePercent = () => {
+  const axisYFeePercent = document.getElementById('axisYFeePercent');
+  axisYFeePercent.textContent = ` ${Math.round(
+    100 / (counters.all / counters.fee)
+    )}%`
+}
+
+export const setAxisYPercent = (data) => {
+  let filtered = [];
+
+  if (leaguesFilter.from && leaguesFilter.to) {
+    filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
+    filtered = filtered.filter(t => t[fromLeagueField] === leaguesFilter.from);
+  } else if (leaguesFilter.from) {
+    filtered = data.filter(t => t[fromLeagueField] === leaguesFilter.from);
+  } else if (leaguesFilter.to) {
+    filtered = data.filter(t => t[toLeagueField] === leaguesFilter.to);
+  } else {
+    filtered = data;
+  }
+
+  let dataFeeState = filtered.filter(t => t[feeField] === '0' || t[feeField] === '?');
+  let dataNormalState = filtered.filter(t => t[feeField] !== '0' && t[feeField] !== '?');
+
+  const counters = {};
+  counters.all = filtered.length;
+  counters.normal = dataNormalState.length;
+  counters.fee = dataFeeState.length;
+
+  axisYTopPercent.textContent = `${Math.round(
+    100 / (counters.all / counters.normal)
+  )}%`;
+
+  const axisYFeePercent = document.getElementById('axisYFeePercent');
+  axisYFeePercent.textContent = ` ${Math.round(
+    100 / (counters.all / counters.fee)
+  )}%`
+}
+
 export const setPointData = (data, topFilter, maxFeeValue) => {
   clearGraph();
   let filtered = [];
@@ -887,9 +931,7 @@ export const setPointData = (data, topFilter, maxFeeValue) => {
   counters.normal = filtered.length;
   counters.fee = dataFeeState.length;
 
-  axisYTopPercent.textContent = `${Math.round(
-    100 / (counters.all / counters.normal)
-    )}%`;
+  setAxisYTopPercent();
 
   dataState = filtered;
   dataState = dataState.map((d, i) => ({...d, i}));
