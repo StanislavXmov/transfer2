@@ -61,7 +61,7 @@ const axisYTopBorder = document.getElementById('axisYTopBorder');
 
 const transferInfo = document.getElementById('transferInfo');
 const playerImage = document.getElementById('playerImage');
-const playerImageBg = document.getElementById('playerImageBg');
+// const playerImageBg = document.getElementById('playerImageBg');
 const name = document.getElementById('name');
 const playerNationality = document.getElementById('playerNationality');
 const fromTeam = document.getElementById('fromTeam');
@@ -334,15 +334,16 @@ const circleOver = (e) => {
       transferInfo.style.bottom = `auto`;
       
       name.textContent = d[playerField];
-      playerImage.src = players[d[playerField]].img;
-      const ctx = playerImageBg.getContext("2d");
-      const baseImage = new Image();
-      baseImage.src = players[d[playerField]].img;
-      baseImage.onload = function(){
-        // playerImage.src = baseImage.src;
-        ctx.drawImage(baseImage, 0, 0, 1, baseImage.naturalHeight, 0, 0, 30, 128);
-        ctx.drawImage(baseImage, baseImage.naturalWidth - 1, 0, 1, baseImage.naturalHeight, 128 - 30, 0, 30, 128);
-      }
+      // playerImage.src = players[d[playerField]].img;
+      playerImage.src = `./images/${d[playerField]}.png`;
+      // const ctx = playerImageBg.getContext("2d");
+      // const baseImage = new Image();
+      // baseImage.src = players[d[playerField]].img;
+      // baseImage.onload = function(){
+      //   // playerImage.src = baseImage.src;
+      //   ctx.drawImage(baseImage, 0, 0, 1, baseImage.naturalHeight, 0, 0, 30, 128);
+      //   ctx.drawImage(baseImage, baseImage.naturalWidth - 1, 0, 1, baseImage.naturalHeight, 128 - 30, 0, 30, 128);
+      // }
       age.textContent = d[ageField];
       playerNationality.textContent = `${countries[d[nationalityField]]} ${d[nationalityField]}`;
       marketValue.textContent = (getMarketValue(d[marketValueField])/ 1000000).toLocaleString();
@@ -386,15 +387,16 @@ const feeCircleOver = (e) => {
       transferInfo.style.top = `auto`;
 
       name.textContent = d[playerField];
-      playerImage.src = players[d[playerField]].img;
-      const ctx = playerImageBg.getContext("2d");
-      const baseImage = new Image();
-      baseImage.src = players[d[playerField]].img;
-      baseImage.onload = function(){
-        // playerImage.src = baseImage.src;
-        ctx.drawImage(baseImage, 0, 0, 1, baseImage.naturalHeight, 0, 0, 30, 128);
-        ctx.drawImage(baseImage, baseImage.naturalWidth - 1, 0, 1, baseImage.naturalHeight, 128 - 30, 0, 30, 128);
-      }
+      // playerImage.src = players[d[playerField]].img;
+      playerImage.src = `./images/${d[playerField]}.png`;
+      // const ctx = playerImageBg.getContext("2d");
+      // const baseImage = new Image();
+      // baseImage.src = players[d[playerField]].img;
+      // baseImage.onload = function(){
+      //   // playerImage.src = baseImage.src;
+      //   ctx.drawImage(baseImage, 0, 0, 1, baseImage.naturalHeight, 0, 0, 30, 128);
+      //   ctx.drawImage(baseImage, baseImage.naturalWidth - 1, 0, 1, baseImage.naturalHeight, 128 - 30, 0, 30, 128);
+      // }
 
       age.textContent = d[ageField];
       playerNationality.textContent = `${countries[d[nationalityField]]} ${d[nationalityField]}`;
@@ -423,9 +425,9 @@ const circleOut = (e) => {
   transferInfo.style.display = 'none';
   playerImage.src = "";
   selected = '-1';
-  const ctx = playerImageBg.getContext("2d");
-  ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, 128, 128);
+  // const ctx = playerImageBg.getContext("2d");
+  // ctx.fillStyle = "white";
+  // ctx.fillRect(0, 0, 128, 128);
 
   if (e.target.dataset.isActive === 'true') {
     // setLeaguesOpacity(1);
