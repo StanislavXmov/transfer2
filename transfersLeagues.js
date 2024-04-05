@@ -606,6 +606,7 @@ export const setLeagues = (data) => {
       }
 
       if (!leaguesFilter.to && !leaguesFilter.from) {
+      {
         // change rect position
         svgTo.selectAll("rect")
           .attr("y", d => TO.y(d[0]));
@@ -651,6 +652,55 @@ export const setLeagues = (data) => {
           span.style.top = `${y}px`;
           toLeaguesContainer.append(span);
         });
+      }
+      {
+        // change rect position
+        svgFrom.selectAll("rect")
+          .attr("y", d => FROM.y(d[0]));
+        // change domainY position
+        svgFrom.select(".domainY").remove();
+        svgFrom.append("g")
+          .attr("class", `domainY`)
+          .attr("transform", `translate(${12}, 0)`)
+          .call(d3.axisLeft(FROM.y))
+          .style("pointer-events", 'none')
+          .call(g => g.select(".domain").remove());
+        svgFrom.selectAll('.domainY')
+          .selectAll("line").remove();
+        svgFrom.selectAll('.domainY')
+          .selectAll("text")
+          .style("font-size", '12px')
+          .attr("text-anchor", 'start')
+          .attr("data-text-from-league", d => d)
+          .text(d => {
+              if (d.length > 40) {
+              return `${d.substring(0, 40)}...`;
+            } else {
+              return d;
+            }
+          });
+        
+        // change flag position
+        const nodes = svgFrom
+          .selectAll("[data-rect-from-league")
+          .nodes();
+        const flags = document.querySelectorAll('[data-flag-from]');
+        flags.forEach(f => f.remove());
+
+        nodes.forEach((n, i) => {
+          // console.log(fromData[i]);
+          const y = Number(n.getAttribute('y'));
+          const span = document.createElement('span');
+          span.dataset.flagFrom = true;
+          span.dataset.flagFromLeague = fromData[i][0];
+          span.textContent = countries[fromData[i][1].country];
+          span.classList.add('flag');
+          span.style.left = '-15px';
+          span.style.position = 'absolute';
+          span.style.top = `${y}px`;
+          fromLeaguesContainer.append(span);
+        });
+      }
         return;
       }
 
@@ -1163,6 +1213,7 @@ export const setLeagues = (data) => {
       }
 
       if (!leaguesFilter.to && !leaguesFilter.from) {
+      {
         // change rect position
         svgFrom.selectAll("rect")
           .attr("y", d => FROM.y(d[0]));
@@ -1209,6 +1260,55 @@ export const setLeagues = (data) => {
           span.style.top = `${y}px`;
           fromLeaguesContainer.append(span);
         });
+      }
+      {
+        // change rect position
+        svgTo.selectAll("rect")
+          .attr("y", d => TO.y(d[0]));
+        // change domainY position
+        svgTo.select(".domainY").remove();
+        svgTo.append("g")
+          .attr("class", `domainY`)
+          .attr("transform", `translate(${12}, 0)`)
+          .call(d3.axisLeft(TO.y))
+          .style("pointer-events", 'none')
+          .call(g => g.select(".domain").remove());
+        svgTo.selectAll('.domainY')
+          .selectAll("line").remove();
+        svgTo.selectAll('.domainY')
+          .selectAll("text")
+          .style("font-size", '12px')
+          .attr("text-anchor", 'start')
+          .attr("data-text-to-league", d => d)
+          .text(d => {
+              if (d.length > 40) {
+              return `${d.substring(0, 40)}...`;
+            } else {
+              return d;
+            }
+          });
+
+        // change flag position
+        const nodes = svgTo
+          .selectAll("[data-rect-to-league")
+          .nodes();
+        const flags = document.querySelectorAll('[data-flag-to]');
+        flags.forEach(f => f.remove());
+        
+        nodes.forEach((n, i) => {
+          const y = Number(n.getAttribute('y'));
+          const span = document.createElement('span');
+          span.dataset.flagTo = true;
+          span.dataset.flagToLeague = toData[i][0];
+          span.textContent = countries[toData[i][1].country];
+          span.classList.add('flag');
+          span.style.left = '-15px';
+          span.style.position = 'absolute';
+          span.style.top = `${y}px`;
+          toLeaguesContainer.append(span);
+        });
+      }
+        return;
       }
 
       if (leaguesFilter.from || !leaguesFilter.to) {
