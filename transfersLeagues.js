@@ -509,17 +509,87 @@ export const setLeagues = (data) => {
             _fromLeaguesObj[t[fromLeagueField]].league = t[fromLeagueField];
           }
         });
+        // const _fromData = Object.entries(_fromLeaguesObj)
+        //   .sort((a, b) => fromLeaguesObj[b[0]].count - fromLeaguesObj[a[0]].count);
+
         const _fromData = Object.entries(_fromLeaguesObj)
-          .sort((a, b) => fromLeaguesObj[b[0]].count - fromLeaguesObj[a[0]].count);
+        .sort((a, b) => _fromLeaguesObj[b[0]].count - _fromLeaguesObj[a[0]].count);
+        // add empty leagues
+        fromData.forEach(t => {
+          let finded = false;
+          for (let i = 0; i < _fromData.length; i++) {
+            if (_fromData[i][0] === t[0]) {
+              finded = true;
+            }
+          }
+          if (!finded) {
+            const newD = [t[0], {...t[1], count: 0}];
+            _fromData.push(newD);
+          }
+        });
 
         fromData.forEach(d => {
           setLeaguesOpacityByFrom(d[0], 1);
           d3.selectAll(`[data-rect-from-league="${d[0]}"]`)
             .style("opacity", 0.4);
         });
+
+        // new 
+        const y = d3.scaleBand()
+          .range([0, scrollFrom ? fromHeight : fromHeight - 22])
+          .domain(_fromData.map(d => d[0]))
+          .padding(.1);
+        TO._fromDataY = y;
         
         svgTo.select("#addedTo").selectAll("rect").remove();
         svgFrom.select("#addedFrom").selectAll("rect").remove();
+
+        svgFrom.selectAll("rect")
+        .attr("y", d => y(d[0]));
+
+        // change domainY position
+        svgFrom.select(".domainY").remove();
+        svgFrom.append("g")
+          .attr("class", `domainY`)
+          .attr("transform", `translate(${12}, 0)`)
+          .call(d3.axisLeft(y))
+          .style("pointer-events", 'none')
+          .call(g => g.select(".domain").remove());
+        svgFrom.selectAll('.domainY')
+          .selectAll("line").remove();
+        svgFrom.selectAll('.domainY')
+          .selectAll("text")
+          .style("font-size", '12px')
+          .attr("text-anchor", 'start')
+          .attr("data-text-from-league", d => d)
+          .text(d => {
+              if (d.length > 40) {
+              return `${d.substring(0, 40)}...`;
+            } else {
+              return d;
+            }
+          });
+      
+        // change flag position
+        const nodes = svgFrom
+          .selectAll("rect")
+          .nodes();
+        const flags = document.querySelectorAll('[data-flag-from]');
+        flags.forEach(f => f.remove());
+
+        nodes.forEach((n, i) => {
+          const y = Number(n.getAttribute('y'));
+          const span = document.createElement('span');
+          span.dataset.flagFrom = true;
+          span.dataset.flagFromLeague = fromData[i][0];
+          span.textContent = countries[fromData[i][1].country];
+          span.classList.add('flag');
+          span.style.left = '-15px';
+          span.style.position = 'absolute';
+          span.style.top = `${y}px`;
+          fromLeaguesContainer.append(span);
+        });
+
         svgFrom.select("#addedFrom")
           .selectAll("rect")
           .data(_fromData)
@@ -998,16 +1068,85 @@ export const setLeagues = (data) => {
             _toLeaguesObj[t[toLeagueField]].league = t[toLeagueField];
           }
         });
+        // const _toData = Object.entries(_toLeaguesObj)
+        //   .sort((a, b) => toLeaguesObj[b[0]].count - toLeaguesObj[a[0]].count);
         const _toData = Object.entries(_toLeaguesObj)
-          .sort((a, b) => toLeaguesObj[b[0]].count - toLeaguesObj[a[0]].count);
+          .sort((a, b) => _toLeaguesObj[b[0]].count - _toLeaguesObj[a[0]].count);
+        // add empty leagues
+        toData.forEach(t => {
+          let finded = false;
+          for (let i = 0; i < _toData.length; i++) {
+            if (_toData[i][0] === t[0]) {
+              finded = true;
+            }
+          }
+          if (!finded) {
+            const newD = [t[0], {...t[1], count: 0}];
+            _toData.push(newD);
+          }
+        });
+
         toData.forEach(d => {
           setLeaguesOpacityByTo(d[0], 1);
           d3.selectAll(`[data-rect-to-league="${d[0]}"]`)
             .style("opacity", 0.4);
         });
 
+        const y = d3.scaleBand()
+          .range([0, scrollTo ? toHeight : toHeight - 22])
+          .domain(_toData.map(d => d[0]))
+          .padding(.1);
+        FROM._toDataY = y;
+
         svgFrom.select("#addedFrom").selectAll("rect").remove();
         svgTo.select("#addedTo").selectAll("rect").remove();
+
+        // change rect position
+        svgTo.selectAll("rect")
+          .attr("y", d => y(d[0]));
+        // change domainY position
+        svgTo.select(".domainY").remove();
+        svgTo.append("g")
+          .attr("class", `domainY`)
+          .attr("transform", `translate(${12}, 0)`)
+          .call(d3.axisLeft(y))
+          .style("pointer-events", 'none')
+          .call(g => g.select(".domain").remove());
+        svgTo.selectAll('.domainY')
+          .selectAll("line").remove();
+        svgTo.selectAll('.domainY')
+          .selectAll("text")
+          .style("font-size", '12px')
+          .attr("text-anchor", 'start')
+          .attr("data-text-to-league", d => d)
+          .text(d => {
+              if (d.length > 40) {
+              return `${d.substring(0, 40)}...`;
+            } else {
+              return d;
+            }
+          });
+
+      // change flag position
+      const nodes = svgTo
+        .selectAll("rect")
+        .nodes();
+      const flags = document.querySelectorAll('[data-flag-to]');
+      flags.forEach(f => f.remove());
+    
+      nodes.forEach((n, i) => {
+        const y = Number(n.getAttribute('y'));
+        const span = document.createElement('span');
+        span.dataset.flagTo = true;
+        span.dataset.flagToLeague = toData[i][0];
+        span.textContent = countries[toData[i][1].country];
+        span.classList.add('flag');
+        span.style.left = '-15px';
+        span.style.position = 'absolute';
+        span.style.top = `${y}px`;
+        toLeaguesContainer.append(span);
+      });
+
         svgTo.select("#addedTo")
           .selectAll("rect")
           .data(_toData)
