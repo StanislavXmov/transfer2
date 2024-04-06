@@ -701,6 +701,8 @@ export const setLeagues = (data) => {
           fromLeaguesContainer.append(span);
         });
       }
+        TO._fromDataY = null;
+        FROM._toDataY = null;
         return;
       }
 
@@ -1308,6 +1310,8 @@ export const setLeagues = (data) => {
           toLeaguesContainer.append(span);
         });
       }
+        TO._fromDataY = null;
+        FROM._toDataY = null;
         return;
       }
 
