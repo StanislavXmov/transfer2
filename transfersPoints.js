@@ -500,7 +500,9 @@ const setAverageLines = (data) => {
   averageFeeTitleWrapper.style.left = `${averageFeeX - 110}px`;
   averageFeeTitleData.textContent = `${averageFeeTitle}M`;
 
-  averageFee && svg.append('line')
+  const averageFeeGroup = svg.select("#averageFeeGroup");
+
+  averageFee && averageFeeGroup.append('line')
     .attr("id", "averageFee")
     .attr('x1', paddingLeft - 3)
     .attr('y1', averageFeeY)
@@ -526,7 +528,9 @@ const setAverageLines = (data) => {
   averageMarketTitleWrapper.style.left = `${averageMarketX + 4}px`;
   averageMarketTitleData.textContent = `${averageMarketTitle}M`;
 
-  averageMarket && svg.append('line')
+  const averageMarketGroup = svg.select("#averageMarketGroup");
+
+  averageMarket && averageMarketGroup.append('line')
     .attr("id", "averageMarket")
     .attr('x1', averageMarketX)
     .attr('y1', 20)
@@ -559,6 +563,8 @@ const setAverageLines = (data) => {
     averageFreeMarketTitleData.textContent = `${averageMarketTitle}M`;
 
     const svg = d3.select('#feePoints');
+
+    const averageMarketGroup = svg.select("#averageFreeMarketGroup");
   
     averageMarket && svg.append('line')
       .attr("id", "averageFreeMarket")
@@ -602,7 +608,7 @@ const createPoints = (data) => {
   averageFeeTitleWrapper.style.left = `${averageFeeX - 110}px`;
   averageFeeTitleData.textContent = `${averageFeeTitle}M`;
 
-  averageFee && svg.append('line')
+  averageFee && svg.append('g').attr("id", "averageFeeGroup").append('line')
     .attr("id", "averageFee")
     .attr('x1', paddingLeft - 3)
     .attr('y1', averageFeeY)
@@ -629,7 +635,7 @@ const createPoints = (data) => {
   averageMarketTitleWrapper.style.left = `${averageMarketX + 4}px`;
   averageMarketTitleData.textContent = `${averageMarketTitle}M`;
 
-  averageMarket && svg.append('line')
+  averageMarket && svg.append('g').attr("id", "averageMarketGroup").append('line')
     .attr("id", "averageMarket")
     .attr('x1', averageMarketX)
     .attr('y1', 20)
@@ -866,7 +872,7 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
   averageFreeMarketTitleWrapper.style("left", `${averageMarketX + 4}px`);
   averageFreeMarketTitleData.text(`${averageMarketTitle}M`);
 
-  averageMarket && svg.append('line')
+  averageMarket && svg.append('g').attr("id", "averageFreeMarketGroup").append('line')
     .attr("id", "averageFreeMarket")
     .attr('x1', averageMarketX)
     .attr('y1', 0)
