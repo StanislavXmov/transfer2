@@ -678,6 +678,7 @@ const createPoints = (data) => {
         })
         .attr("data-index", (d, i) => d[transferIdField])
         .attr("data-is-active", true)
+        .style("z-index", 100)
         .attr("data-left", d => getX(d)(getMarketValue(d[marketValueField])) + paddingLeft - 3)
         .attr("data-top", d => {
           return getY(d)(d[feeField] === '?' ? 0 : d[feeField]) - axisStep / 4 - 3 - dy - 20;
@@ -963,6 +964,7 @@ const createFeePoints = (data, topFilter, maxFeeValue) => {
         })
       .attr("data-index", (d, i) => d[transferIdField])
       .attr("data-is-active", true)
+      .style("z-index", 100)
       .attr("data-left", d => getX(d)(getMarketValue(d[marketValueField])) + paddingLeft - 3)
       .attr("data-top", d => {
         setState(d, yStatePL);
@@ -1070,6 +1072,7 @@ export const setPointData = (data, topFilter, maxFeeValue) => {
 export const setPointsOpacity = (v) => {
   d3.selectAll(`[data-index]`)
   .attr("data-is-active", v === 0.1 ? false : true)
+  .style("z-index", v === 0.1 ? 0 : 100)
   .style("opacity", v);
 }
 
@@ -1077,6 +1080,7 @@ export const setPointsOpacityByFiltered = (filtered) => {
   filtered.forEach((d) => {
     d3.selectAll(`[data-index="${d[transferIdField]}"]`)
     .attr("data-is-active", true)
+    .style("z-index", 100)
     .style("opacity", 1)
   });
 }
